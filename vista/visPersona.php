@@ -1,3 +1,58 @@
+<?php
+  include("../modelo/Persona.php");
+  include("../control/controlConexion.php");
+  include("../control/ctrPersona.php");
+
+  $id       = ""; 
+  $nombre   = ""; 
+  $cedula   = ""; 
+  $correo   = "";
+  $bot      = "";
+  $listaPersonas = []; 
+
+  try{
+    if(isset($_POST["txtId"])) $id          = $_POST["txtId"] ;
+    if(isset($_POST['txtNombre'])) $nombre  = $_POST['txtNombre'];
+    if(isset($_POST['txtCedula'])) $cedula  = $_POST['txtCedula'];
+    if(isset($_POST['txtCorreo'])) $correo  = $_POST['txtCorreo'];
+    if(isset($_POST['btn']))$bot = $_POST['btn'];
+
+    switch ($bot) {
+      case "Guardar":
+          $objPersona = new Persona($id,$nombre,$cedula,$correo, "");
+          $objControlPersona = new ctrPersona($objPersona);
+          $objControlPersona->guardar();
+          break;
+      case "Consultar":
+            $objPersona = new Persona($id,"","","","");
+            $objControlPersona = new ctrPersona($objPersona);
+            $objPersona = $objControlPersona->consultar();
+            $cedula = $objPersona->getCedula();
+            $nombre = $objPersona->getNombre();
+            $correo  = $objPersona->getCorreo();
+            break;
+        case "Modificar":
+            $objPersona = new Persona($id,$nombre,$cedula,$correo,"");
+            $objControlPersona = new ctrPersona($objPersona);
+            $objPersona = $objControlPersona->modificar();
+         break;
+        case "Borrar":
+            $objPersona = new Persona($id,"","","","");
+            $objControlPersona = new ctrPersona($objPersona);
+            $objPersona = $objControlPersona->borrar();
+            break;  
+        case "Listar":
+            $objPersona = new Persona($id,$nombre,$cedula,$correo,"");
+            $objControlPersona = new ctrPersona($objPersona);
+            $listaPersonas=$objControlPersona->listar();
+            break;           
+   }
+  }
+  catch (Exception $objExp) {
+      echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
+  }
+
+?>
 
 <!doctype html>
 <html lang="en">
@@ -7,7 +62,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Gestión de calidad</title>
+    <title>Sidebars · Bootstrap v5.0</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/">
 
@@ -100,59 +155,131 @@
 <main>
   <h1 class="visually-hidden">Sidebar</h1>
 
-  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;  height: 100% !important;">
     <a href="/app-elect-global" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <!-- <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg> -->
       <span class="fs-4">Gestión de calidad</span>
     </a>
     <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-          Evidencias
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+              Evidencias
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+              Personas
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+              Autores
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+              Usuario
+            </a>
+          </li>
+        </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>mdo</strong>
         </a>
-      </li>
-      <li>
-        <a href="vista/visPersona.php" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href=""/></svg>
-          Personas
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-          Autores
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-          Usuario
-        </a>
-      </li>
-    </ul>
-    <hr>
-    <div class="dropdown">
-      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-        <strong>mdo</strong>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-        <li><a class="dropdown-item" href="#">New project...</a></li>
-        <li><a class="dropdown-item" href="#">Settings</a></li>
-        <li><a class="dropdown-item" href="#">Profile</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Sign out</a></li>
-      </ul>
-    </div>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+      </div>
   </div>
-
   <div class="b-example-divider"></div>
-  
+
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px">
+      <h1 class="mb-3">Personas</h1>
+        <form name="formEv" action="visPersona.php" method="post" class=" mb-auto text-center">
+            <div class="row">
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input name="txtId" type="text" class="form-control" value="<?php echo $id?>" id="floatingInput" placeholder="" >
+                    <label for="floatingInput"> Id </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input name="txtNombre" type="text" class="form-control" value="<?php echo $nombre?>" id="floatingInput2" placeholder="">
+                    <label for="floatingInput2">Nombre</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input name="txtCedula" type="text" class="form-control" value="<?php echo $cedula?>" id="floatingInput3" placeholder="">
+                    <label for="floatingInput3">Cédula</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-floating mb-3">
+                    <input name="txtCorreo" type="text" class="form-control" value="<?php echo $correo?>" id="floatingInput3" placeholder="">
+                    <label for="floatingInput3">Correo</label>
+                  </div>
+                </div> 
+            </div>
+
+                <div class="row mt-4">
+                <div class="col">
+                  
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                          <input type="submit" class="btn btn-success" value="Guardar" name="btn"/>
+                        </div>
+                        <div class="col">
+                          <input type="submit" class="btn btn-primary" value="Consultar" name="btn"/>
+                        </div>
+                        <div class="col">
+                          <input type="submit" class="btn btn-primary" value="Modificar" name="btn"/>
+                        </div>
+                        <div class="col">
+                          <input type="submit" class="btn btn-primary" value="Listar" name="btn"/>
+                        </div>
+                        <div class="col">
+                          <input type="submit" class="btn btn-danger" value="Borrar" name="btn"/>
+                        </div>
+                    </div>
+                </div> 
+          
+          
+          <table border="1">
+            <?php
+            foreach ( $listaPersonas as $persona ):
+                    ?>
+                    <tr>
+                    <?php
+                    foreach ( $persona as $p ):
+                    ?>
+                            <td><?php echo $p;?></td>
+                    <?php
+                    endforeach;
+                    ?>
+                    </tr>
+            <?php
+            endforeach;
+            ?>
+            </table>
+        </form>
+      
+    </div>
 </main>
-
-
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
       <script src="sidebars.js"></script>
