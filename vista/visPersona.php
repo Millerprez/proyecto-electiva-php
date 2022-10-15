@@ -91,7 +91,7 @@
     <!-- Custom styles for this template -->
     <link href="../sidebars.css" rel="stylesheet">
   </head>
-  <body>
+  <body >
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="bootstrap" viewBox="0 0 118 94">
@@ -152,7 +152,7 @@
   </symbol>
 </svg>
 
-<main>
+<main class="">
   <h1 class="visually-hidden">Sidebar</h1>
 
   <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; ">
@@ -197,7 +197,7 @@
   </div>
   <div class="b-example-divider"></div>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 60%">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 60%">
       <h1 class="mb-3">Personas</h1>
         <form name="formEv" action="visPersona.php" method="post" class=" mb-auto text-center">
             <div class="row">
@@ -273,7 +273,7 @@
                     <?php
                     endforeach;
                     ?>
-                    
+
                     </tr>
             <?php
             endforeach;
