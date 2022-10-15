@@ -34,6 +34,7 @@ class ControlConexion{
     function ejecutarComandoSql($sql) {
     	try	{
 			$this->conn->query($sql);
+			echo "Guardado con éxito ";
 			}
 		catch (Exception $e) {
 				echo " NO SE AFECTARON LOS REGISTROS: ". $e->getMessage()."\n";
@@ -43,6 +44,7 @@ class ControlConexion{
 	function ejecutarSelect($sql) {
 			try	{
 				$recordSet=$this->conn->query($sql);
+				echo "Consultado ";
 				}
 	
 			catch (Exception $e) {

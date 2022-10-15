@@ -4,7 +4,7 @@
 
         var $objEvidencia; 
 
-        function _construct($objEvidencia){
+        function __construct($objEvidencia){
             $this-> objEvidencia = $objEvidencia;
         }
 
@@ -16,37 +16,30 @@
         }
        
         function guardar() {
+            echo "".$this->objEvidencia->getFecha();  
             $id    = $this->objEvidencia->getId();
             $tit   = $this->objEvidencia->getTitulo();
-            $auEvi = $this->objEvidencia->getAutorEvidencia();
-            $cond  = $this->objEvidencia->getCondicionCalidad();
-            $cap   = $this->objEvidencia->getCapitulo();
-            $secc  = $this->objEvidencia->getSecciones();
-            $artic = $this->objEvidencia->getArticulos();
-            $liter = $this->objEvidencia->getLiterales();
-            $numls = $this->objEvidencia->getNumerales();
-            $parag = $this->objEvidencia->getParagrafos();
+            $auEvi = $this->objEvidencia->getAutor();
+            $cond  = $this->objEvidencia->getCondicionCalidad(); 
+            $numls = $this->objEvidencia->getNumeral();
+            $parag = $this->objEvidencia->getParagrafo();
             $fec   = $this->objEvidencia->getFecha();
             $corx  = $this->objEvidencia->getCordenadasX();
             $cory  = $this->objEvidencia->getCordenadasY();
             $obse  = $this->objEvidencia->getObservacion();
             $estad = $this->objEvidencia->getEstado();
-            $nomEv = $this->objEvidencia->getMombreEvidencia();
+            $nomEv = $this->objEvidencia->getNombreEvidencia();
             $estLg = "ACTIVA";
             echo ("saving2");
-            $sql="INSERT INTO EVIDENCIA
+            $sql="INSERT INTO tblevidencia
                 VALUES
                     (
                         '".$id."',
                         '".$tit."',
-                        '".$auEvi."',
                         '".$cond."',
-                        '".$cap."',
-                        '".$secc."',
-                        '".$artic."',
-                        '".$liter."',
                         '".$numls."',
                         '".$parag."',
+                        '".$auEvi."',
                         '".$fec."',
                         '".$corx."',
                         '".$cory."',
@@ -64,40 +57,32 @@
         function modificar(){
             $id    = $this->objEvidencia->getId();
             $tit   = $this->objEvidencia->getTitulo();
-            $auEvi = $this->objEvidencia->getAutorEvidencia();
+            $auEvi = $this->objEvidencia->getAutor();
             $cond  = $this->objEvidencia->getCondicionCalidad();
-            $cap   = $this->objEvidencia->getCapitulo();
-            $secc  = $this->objEvidencia->getSecciones();
-            $artic = $this->objEvidencia->getArticulos();
-            $liter = $this->objEvidencia->getLiterales();
-            $numls = $this->objEvidencia->getNumerales();
-            $parag = $this->objEvidencia->getParagrafos();
+            $numls = $this->objEvidencia->getNumeral();
+            $parag = $this->objEvidencia->getParagrafo();
             $fec   = $this->objEvidencia->getFecha();
             $corx  = $this->objEvidencia->getCordenadasX();
             $cory  = $this->objEvidencia->getCordenadasY();
             $obse  = $this->objEvidencia->getObservacion();
             $estad = $this->objEvidencia->getEstado();
-            $nomEv = $this->objEvidencia->getMombreEvidencia();
-            $estLg = $this->objEvidencia->getEstadoLogico;
+            $nomEv = $this->objEvidencia->getNombreEvidencia();
+            $estLg = $this->objEvidencia->getEstado();
 
-            $sql="  UPDATE EVIDENCIA
+            $sql="  UPDATE tblevidencia
                     SET TITULO ='".$tit."',
-                        AUTOR_EVIDENCIA = '".$auEvi."',
                         CONDICION = '".$cond."',
-                        CAPITULO = '".$cap."',
-                        SECCIONES = '".$secc."',
-                        ARTICULOS = '".$artic."',
-                        LITERALES = '".$liter."',
-                        NUMERALES = '".$numls."',
-                        PARAGRAFOS = '".$parag."',
+                        fkidnumeral  = '".$numls."',
+                        fkidparagrafo  = '".$parag."',
+                        fkidautor  = '".$auEvi."',
                         FECHA = '".$fec."',
                         CORDENADA_X = '".$corx."',
                         CORDENADA_Y = '".$cory."',
                         OBSERVACION = '".$obse."',
                         ESTADO = '".$estad."',
                         NOMBRE_EVIDENCIA = '".$nomEv."',
-                        ESTADO_LOGICO = '".$estLg."',
-                    WHERE ID = '".$id."'";
+                        ESTADO_LOGICO = '".$estLg."'
+                    WHERE id  = '".$id."'";
             
             $this->conexion($sql);
 
@@ -106,9 +91,9 @@
         function borrar(){
             $id = $this->objEvidencia->getId();
             
-            $sql="UPDATE EVIDENCIA
+            $sql="UPDATE tblevidencia
             SET ESTADO_LOGICO = 'INACTIVA'
-                WHERE ID = '".$id."'";
+                WHERE id  = '".$id."'";
             $this->conexion($sql);
         }
 
@@ -116,30 +101,32 @@
             
             $id = $this->objEvidencia->getId();
 
-            $sql="SELECT * FROM EVIDENCIA WHERE ID='".$id."'";
+            echo "Id : ".$this->objEvidencia->getId();
+
+            $sql="SELECT * FROM tblevidencia WHERE id='".$id."'";
 
             $objControlConexion = new ControlConexion();
             $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
             $recordSet=$objControlConexion->ejecutarSelect($sql);
 
+            echo "SQL : ".$sql;
+
             if($row = $recordSet->fetch_array(MYSQLI_BOTH)){
                 if($row['ESTADO_LOGICO'] == "ACTIVA"){
-                    $this->objEvidencia->setId($row['ID']);
-                    $this->objEvidencia->setTitulo($row['TITULO']);
-                    $this->objEvidencia->setAutorEvidencia($row['AUTOR_EVIDENCIA']);
+                    $this->objEvidencia->setId($row['id']);
+                    $this->objEvidencia->setTitulo($row['titulo']);
+                    $this->objEvidencia->setAutor($row['fkidautor']);
                     $this->objEvidencia->setCondicionCalidad($row['CONDICION']);
-                    $this->objEvidencia->setCapitulo($row['CAPITULO']);
-                    $this->objEvidencia->setSecciones($row['SECCIONES']);
-                    $this->objEvidencia->setArticulos($row['ARTICULOS']);
-                    $this->objEvidencia->setLiterales($row['LITERALES']);
-                    $this->objEvidencia->setNumerales($row['NUMERALES']);
-                    $this->objEvidencia->setParagrafos($row['PARAGRAFOS']);
+                    $this->objEvidencia->setNumeral($row['fkidnumeral']);
+                    $this->objEvidencia->setParagrafo($row['fkidparagrafo']);
                     $this->objEvidencia->setFecha($row['FECHA']);
                     $this->objEvidencia->setCordenadasX($row['CORDENADA_X']);
                     $this->objEvidencia->setCordenadasY($row['CORDENADA_Y']);
                     $this->objEvidencia->setObservacion($row['OBSERVACION']);
                     $this->objEvidencia->setEstado($row['ESTADO']);
-                    $this->objEvidencia->setMombreEvidencia($row['NOMBRE_EVIDENCIA']);
+                    $this->objEvidencia->setNombreEvidencia($row['NOMBRE_EVIDENCIA']);
+
+                    echo "Titulo : ".$this->objEvidencia->getEstado();
                 }
             }
 
@@ -152,30 +139,24 @@
             $mat=[];
             $i=0;
 
-            $sql="SELECT * FROM EVIDENCIA";
+            $sql="SELECT * FROM tblevidencia";
             $objControlConexion = new ControlConexion();
             $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
             $recordSet=$objControlConexion->ejecutarSelect($sql);
             while($row = $recordSet->fetch_array(MYSQLI_BOTH)){
                 $mat[$i][0]=$row['ID'];
                 $mat[$i][1]=$row['TITULO'];
-                $mat[$i][2]=$row['AUTOR_EVIDENCIA'];
+                $mat[$i][2]=$row['fkidautor'];
                 $mat[$i][3]=$row['CONDICION'];
-                $mat[$i][4]=$row['CAPITULO'];
-                $mat[$i][5]=$row['SECCIONES'];
-                $mat[$i][6]=$row['ARTICULOS'];
-                $mat[$i][7]=$row['LITERALES'];
-                $mat[$i][8]=$row['NUMERALES'];
-                $mat[$i][9]=$row['PARAGRAFOS'];
-                $mat[$i][10]=$row['FECHA'];
-                $mat[$i][11]=$row['CORDENADA_X'];
-                $mat[$i][12]=$row['CORDENADA_Y'];
-                $mat[$i][12]=$row['OBSERVACION'];
-                $mat[$i][12]=$row['ESTADO'];
-                $mat[$i][12]=$row['NOMBRE_EVIDENCIA'];
-
+                $mat[$i][4]=$row['fkidnumeral'];
+                $mat[$i][5]=$row['fkidparagrafo'];
+                $mat[$i][6]=$row['FECHA'];
+                $mat[$i][7]=$row['CORDENADA_X'];
+                $mat[$i][8]=$row['CORDENADA_Y'];
+                $mat[$i][9]=$row['OBSERVACION'];
+                $mat[$i][10]=$row['ESTADO'];
+                $mat[$i][11]=$row['NOMBRE_EVIDENCIA'];
                 $i++;
-
             }
             $objControlConexion->cerrarBd();
             return $mat;
