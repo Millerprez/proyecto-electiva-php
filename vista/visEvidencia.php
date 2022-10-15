@@ -1,6 +1,6 @@
 <?php
   include("../modelo/Evidencia.php");
-  include("../control/ControlConexion.php");
+  include("../control/controlConexion.php");
   include("../control/ctrEvidencia.php");
 
   $id    = ""; 
@@ -16,11 +16,9 @@
   $estad = ""; 
   $nomEv = ""; 
   $bot = "";
-
+  $mat = [];
   try{
-    if(isset($_POST["txtID"])){
-      $id     = $_POST["txtID"] ;
-    } 
+    if(isset($_POST["txtID"]))$id                 = $_POST["txtID"]; 
     if(isset($_POST['txtTitulo']))$tit            = $_POST['txtTitulo'];
     if(isset($_POST['txtAutor']))$auEvi           = $_POST['txtAutor'];
     if(isset($_POST['ddTipoEvi']))$cond           = $_POST['ddTipoEvi'];
@@ -36,6 +34,7 @@
 
     switch ($bot) {
       case "Guardar":
+         echo "".$corx;
           $objEvidencia = new Evidencia($id,$tit,$auEvi,$cond,$numls,$parag,$fec,$corx,$cory,$obse,$estad,$nomEv);
           $objControlEvidencia = new ctrEvidencia($objEvidencia);
           $objControlEvidencia->guardar();
@@ -62,16 +61,16 @@
             $objControlEvidencia= new ctrEvidencia($objEvidencia);
             $objEvidencia=$objControlEvidencia->modificar();
          break;
-        // case "Borrar":
-        //     $objEvidencia= new Evidencia($id,$tit,$auEvi,$cond,$numls,$parag,$fec,$corx,$cory,$obse,$estad,$nomEv);
-        //     $objControlEvidencia= new ctrEvidencia($objEvidencia);
-        //     $objEvidencia=$objControlEvidencia->borrar();
-        //     break;  
-        // case "Listar":
-        //     $objEvidencia= new Evidencia($id,$tit,$auEvi,$cond,$numls,$parag,$fec,$corx,$cory,$obse,$estad,$nomEv);
-        //     $objControlEvidencia= new ctrEvidencia($objEvidencia);
-        //     $mat=$objControlEvidencia->listar();
-        //     break;           
+        case "Borrar":
+            $objEvidencia= new Evidencia($id,"","","","","","","","","","","");
+            $objControlEvidencia= new ctrEvidencia($objEvidencia);
+            $objEvidencia=$objControlEvidencia->borrar();
+            break;  
+        case "Listar":
+            $objEvidencia= new Evidencia("","","","","","","","","","","","");
+            $objControlEvidencia= new ctrEvidencia($objEvidencia);
+            $mat=$objControlEvidencia->listar();
+            break;           
    }
   }
   catch (Exception $objExp) {
@@ -151,7 +150,7 @@
           </div>
           <div class="col">
             <div class="form-floating mb-3">
-              <input name="txtParalelo" type="text" class="form-control" id="floatingInput11" value="<?php echo $corx?>" placeholder="">
+              <input name="txtParalelo" type="text" class="form-control" value="<?php echo $corx?>" id="floatingInput11"  placeholder="">
               <label for="floatingInput11"> Paralelo </label>
             </div>
           </div>
@@ -211,6 +210,23 @@
            </div> 
       </div> 
 
+      <table border="1">
+        <?php
+        foreach ( $mat as $r ):
+                ?>
+                <tr>
+                <?php
+                foreach ( $r as $v ):
+                ?>
+                        <td><?php echo $v;?></td>
+                <?php
+                endforeach;
+                ?>
+                </tr>
+        <?php
+        endforeach;
+        ?>
+        </table>
     </form>
       </div>
       

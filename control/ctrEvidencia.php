@@ -16,7 +16,7 @@
         }
        
         function guardar() {
-            echo "".$this->objEvidencia->getFecha();  
+            echo " Cordenadas ".$this->objEvidencia->getCordenadaX();  
             $id    = $this->objEvidencia->getId();
             $tit   = $this->objEvidencia->getTitulo();
             $auEvi = $this->objEvidencia->getAutor();
@@ -24,13 +24,12 @@
             $numls = $this->objEvidencia->getNumeral();
             $parag = $this->objEvidencia->getParagrafo();
             $fec   = $this->objEvidencia->getFecha();
-            $corx  = $this->objEvidencia->getCordenadasX();
+            $corx  = $this->objEvidencia->getCordenadaX();
             $cory  = $this->objEvidencia->getCordenadasY();
             $obse  = $this->objEvidencia->getObservacion();
             $estad = $this->objEvidencia->getEstado();
             $nomEv = $this->objEvidencia->getNombreEvidencia();
             $estLg = "ACTIVA";
-            echo ("saving2");
             $sql="INSERT INTO tblevidencia
                 VALUES
                     (
@@ -48,8 +47,6 @@
                         '".$nomEv."',
                         '".$estLg."'
                     )";
-                        
-                    echo "Saving";
             $this->conexion($sql);
         }
 
@@ -67,7 +64,6 @@
             $obse  = $this->objEvidencia->getObservacion();
             $estad = $this->objEvidencia->getEstado();
             $nomEv = $this->objEvidencia->getNombreEvidencia();
-            $estLg = $this->objEvidencia->getEstado();
 
             $sql="  UPDATE tblevidencia
                     SET TITULO ='".$tit."',
@@ -81,7 +77,7 @@
                         OBSERVACION = '".$obse."',
                         ESTADO = '".$estad."',
                         NOMBRE_EVIDENCIA = '".$nomEv."',
-                        ESTADO_LOGICO = '".$estLg."'
+                        ESTADO_LOGICO = 'ACTIVA'
                     WHERE id  = '".$id."'";
             
             $this->conexion($sql);
@@ -101,15 +97,11 @@
             
             $id = $this->objEvidencia->getId();
 
-            echo "Id : ".$this->objEvidencia->getId();
-
             $sql="SELECT * FROM tblevidencia WHERE id='".$id."'";
 
             $objControlConexion = new ControlConexion();
             $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
             $recordSet=$objControlConexion->ejecutarSelect($sql);
-
-            echo "SQL : ".$sql;
 
             if($row = $recordSet->fetch_array(MYSQLI_BOTH)){
                 if($row['ESTADO_LOGICO'] == "ACTIVA"){
@@ -125,8 +117,6 @@
                     $this->objEvidencia->setObservacion($row['OBSERVACION']);
                     $this->objEvidencia->setEstado($row['ESTADO']);
                     $this->objEvidencia->setNombreEvidencia($row['NOMBRE_EVIDENCIA']);
-
-                    echo "Titulo : ".$this->objEvidencia->getEstado();
                 }
             }
 
@@ -144,12 +134,12 @@
             $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
             $recordSet=$objControlConexion->ejecutarSelect($sql);
             while($row = $recordSet->fetch_array(MYSQLI_BOTH)){
-                $mat[$i][0]=$row['ID'];
-                $mat[$i][1]=$row['TITULO'];
-                $mat[$i][2]=$row['fkidautor'];
+                $mat[$i][0]=$row['id'];
+                $mat[$i][1]=$row['titulo'];
                 $mat[$i][3]=$row['CONDICION'];
                 $mat[$i][4]=$row['fkidnumeral'];
                 $mat[$i][5]=$row['fkidparagrafo'];
+                $mat[$i][2]=$row['fkidautor'];
                 $mat[$i][6]=$row['FECHA'];
                 $mat[$i][7]=$row['CORDENADA_X'];
                 $mat[$i][8]=$row['CORDENADA_Y'];

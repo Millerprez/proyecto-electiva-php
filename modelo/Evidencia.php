@@ -7,6 +7,7 @@
         var $condicionCalidad;
         var $numeral;
         var $paragrafo;
+        var $fecha;
         var $cordenadaX;
         var $cordenadaY;
         var $observacion;
@@ -14,21 +15,12 @@
         var $nombreEvidencia;
         var $estadoLogico;
 
-        function __construct(
-                 $id,
-                 $titulo,
-                 $autor,
-                 $condicionCalidad,
-                 $numeral,
-                 $paragrafo,
-                 $fecha,
-                 $cordenadaX, 
-                 $cordenadaY,
-                 $observacion,
-                 $estado,
+        function __construct($id,$titulo,$autor,$condicionCalidad,
+        $numeral,$paragrafo,$fecha,$cordenadaX,$cordenadaY,$observacion,$estado,
                  $estadoLogico
             ) {
 
+            echo "Cor en contructor -- ".$cordenadaX;
             $this-> id = $id ;
             $this-> titulo = $titulo;
             $this-> autor = $autor;
@@ -36,11 +28,13 @@
             $this-> numeral = $numeral;
             $this-> paragrafo = $paragrafo;
             $this-> fecha = $fecha;
-            $this-> cordenadax = $cordenadaX;
+            $this->cordenadax = $cordenadaX;
             $this-> cordenadaY =  $cordenadaY;
             $this-> observacion = $observacion;
             $this-> estado = $estado;
             $this-> estadoLogico = $estadoLogico;
+
+            echo "---Cor con el dis----".$this->cordenadax;
         }
 
         function getId(){
@@ -83,11 +77,12 @@
             $this-> fecha = $fecha;
         }
 
-        function getCordenadasX(){
+        function getCordenadaX(){
+            echo "Coder en metodo ---- ".$this->cordenadaX;
             return $this->cordenadaX;
         }
 
-        function setCordenadasX($cordenadaX){
+        function setCordenadaX($cordenadaX){
             $this-> cordenadaX = $cordenadaX;
         }
 
@@ -146,7 +141,6 @@
         function setEstadoLogico($estadoLogico){
             $this-> estadoLogico = $estadoLogico;
         }
-
 
     }
 

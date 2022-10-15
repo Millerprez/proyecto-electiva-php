@@ -44,7 +44,6 @@ class ControlConexion{
 	function ejecutarSelect($sql) {
 			try	{
 				$recordSet=$this->conn->query($sql);
-				echo "Consultado ";
 				}
 	
 			catch (Exception $e) {
