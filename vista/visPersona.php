@@ -62,7 +62,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Sidebars · Bootstrap v5.0</title>
+    <title>Gestión de calidad</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/">
 
@@ -89,7 +89,7 @@
     </style>
 
     <!-- Custom styles for this template -->
-    <link href="sidebars.css" rel="stylesheet">
+    <link href="../sidebars.css" rel="stylesheet">
   </head>
   <body>
     
@@ -155,7 +155,7 @@
 <main>
   <h1 class="visually-hidden">Sidebar</h1>
 
-  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;  height: 100% !important;">
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; ">
     <a href="/app-elect-global" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <!-- <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg> -->
       <span class="fs-4">Gestión de calidad</span>
@@ -163,13 +163,13 @@
     <hr>
         <ul class="nav nav-pills flex-column mb-auto">
           <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
+            <a href="visEvidencia.php" class="nav-link text-white" aria-current="page">
               <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
               Evidencias
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
+            <a href="visPersona.php" class="nav-link active text-white">
               <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
               Personas
             </a>
@@ -189,22 +189,15 @@
         </ul>
       <hr>
       <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-          <strong>mdo</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-          <li><a class="dropdown-item" href="#">New project...</a></li>
-          <li><a class="dropdown-item" href="#">Settings</a></li>
-          <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Sign out</a></li>
-        </ul>
-      </div>
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <strong>Grupo ITM</strong>
+      </a>
+    </div>
   </div>
   <div class="b-example-divider"></div>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 60%">
       <h1 class="mb-3">Personas</h1>
         <form name="formEv" action="visPersona.php" method="post" class=" mb-auto text-center">
             <div class="row">
@@ -233,11 +226,9 @@
                   </div>
                 </div> 
             </div>
-
-                <div class="row mt-4">
-                <div class="col">
-                  
-                </div>
+          <hr>
+  
+            <div class="row">
                 <div class="col">
                     <div class="row">
                         <div class="col">
@@ -257,9 +248,20 @@
                         </div>
                     </div>
                 </div> 
+                <br>
+                <br>
+          <hr>
           
-          
-          <table border="1">
+          <table class="table table-condensed">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">id</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Cédula</th>
+              <th scope="col">Correo</th>
+            </tr>
+          </thead>
+          <tbody>
             <?php
             foreach ( $listaPersonas as $persona ):
                     ?>
@@ -271,10 +273,12 @@
                     <?php
                     endforeach;
                     ?>
+                    
                     </tr>
             <?php
             endforeach;
             ?>
+             </tbody>
             </table>
         </form>
       
@@ -282,6 +286,6 @@
 </main>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
-      <script src="sidebars.js"></script>
+      <script src="../sidebars.js"></script>
   </body>
 </html>
