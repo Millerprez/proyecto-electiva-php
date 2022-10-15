@@ -17,7 +17,7 @@
 
         function __construct($id,$titulo,$autor,$condicionCalidad,
         $numeral,$paragrafo,$fecha,$cordenadaX,$cordenadaY,$observacion,$estado,
-                 $estadoLogico
+                 $nombreEvidencia
             ) {
 
             echo "Cor en contructor -- ".$cordenadaX;
@@ -32,7 +32,7 @@
             $this-> cordenadaY =  $cordenadaY;
             $this-> observacion = $observacion;
             $this-> estado = $estado;
-            $this-> estadoLogico = $estadoLogico;
+            $this-> nombreEvidencia = $nombreEvidencia;
 
             echo "---Cor con el dis----".$this->cordenadax;
         }

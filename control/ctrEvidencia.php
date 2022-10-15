@@ -17,6 +17,7 @@
        
         function guardar() {
             echo " Cordenadas ".$this->objEvidencia->getCordenadaX();  
+            echo " Observacion ".$this->objEvidencia->getNombreEvidencia(); 
             $id    = $this->objEvidencia->getId();
             $tit   = $this->objEvidencia->getTitulo();
             $auEvi = $this->objEvidencia->getAutor();
