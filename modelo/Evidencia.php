@@ -28,13 +28,13 @@
             $this-> numeral = $numeral;
             $this-> paragrafo = $paragrafo;
             $this-> fecha = $fecha;
-            $this->cordenadax = $cordenadaX;
+            $this-> cordenadaX = $cordenadaX;
             $this-> cordenadaY =  $cordenadaY;
             $this-> observacion = $observacion;
             $this-> estado = $estado;
             $this-> nombreEvidencia = $nombreEvidencia;
 
-            echo "---Cor con el dis----".$this->cordenadax;
+            echo "---Cor con el dis----".$this->cordenadaX;
         }
 
         function getId(){
@@ -57,7 +57,7 @@
             return $this->autor;
         }
 
-        function setAutor($autor){
+        function setAutor($autor){ 
             $this-> autor = $autor;
         }
 

@@ -1,82 +1,3 @@
-<?php
-include("../modelo/Evidencia.php");
-include("../control/controlConexion.php");
-include("../control/ctrEvidencia.php");
-
-$id    = "";
-$tit   = "";
-$auEvi = "";
-$cond  = "";
-$numls = "";
-$parag = "";
-$fec   = "";
-$corx  = "";
-$cory  = "";
-$obse  = "";
-$estad = "";
-$nomEv = "";
-$bot = "";
-$mat = [];
-try {
-  if (isset($_POST["txtID"])) $id                 = $_POST["txtID"];
-  if (isset($_POST['txtTitulo'])) $tit            = $_POST['txtTitulo'];
-  if (isset($_POST['txtAutor'])) $auEvi           = $_POST['txtAutor'];
-  if (isset($_POST['ddTipoEvi'])) $cond           = $_POST['ddTipoEvi'];
-  if (isset($_POST['txtNumerales'])) $numls       = $_POST['txtNumerales'];
-  if (isset($_POST['txtParagrafos'])) $parag      = $_POST['txtParagrafos'];
-  if (isset($_POST['txtFecha'])) $fec             = $_POST['txtFecha'];
-  if (isset($_POST['txtParalelo'])) $corx         = $_POST['txtParalelo'];
-  if (isset($_POST['txtMeridiano'])) $cory        = $_POST['txtMeridiano'];
-  if (isset($_POST['txtObservacion'])) $obse      = $_POST['txtObservacion'];
-  if (isset($_POST['txtEstado'])) $estad          = $_POST['txtEstado'];
-  if (isset($_POST['txtNombreEvidencia'])) $nomEv = $_POST['txtNombreEvidencia'];
-  if (isset($_POST['btn'])) $bot = $_POST['btn'];
-
-  switch ($bot) {
-    case "Guardar":
-      echo "" . $corx;
-      $objEvidencia = new Evidencia($id, $tit, $auEvi, $cond, $numls, $parag, $fec, $corx, $cory, $obse, $estad, $nomEv);
-      $objControlEvidencia = new ctrEvidencia($objEvidencia);
-      $objControlEvidencia->guardar();
-      break;
-    case "Consultar":
-      $objEvidencia = new Evidencia($id, "", "", "", "", "", "", "", "", "", "", "");
-      $objControlEvidencia = new ctrEvidencia($objEvidencia);
-      $objEvidencia = $objControlEvidencia->consultar();
-      $tit = $objEvidencia->getTitulo();
-      $auEvi = $objEvidencia->getAutor();
-      $cond  = $objEvidencia->getCondicionCalidad();
-      $numls = $objEvidencia->getNumeral();
-      $parag = $objEvidencia->getParagrafo();
-      $fec   = $objEvidencia->getFecha();
-      $corx  = $objEvidencia->getCordenadaX();
-      $cory  = $objEvidencia->getCordenadasY();
-      $obse  = $objEvidencia->getObservacion();
-      $estad = $objEvidencia->getEstado();
-      $nomEv = $objEvidencia->getNombreEvidencia();
-      //echo phpinfo();
-      break;
-    case "Modificar":
-      $objEvidencia = new Evidencia($id, $tit, $auEvi, $cond, $numls, $parag, $fec, $corx, $cory, $obse, $estad, $nomEv);
-      $objControlEvidencia = new ctrEvidencia($objEvidencia);
-      $objEvidencia = $objControlEvidencia->modificar();
-      break;
-    case "Borrar":
-      $objEvidencia = new Evidencia($id, "", "", "", "", "", "", "", "", "", "", "");
-      $objControlEvidencia = new ctrEvidencia($objEvidencia);
-      $objEvidencia = $objControlEvidencia->borrar();
-      break;
-    case "Listar":
-      $objEvidencia = new Evidencia("", "", "", "", "", "", "", "", "", "", "", "");
-      $objControlEvidencia = new ctrEvidencia($objEvidencia);
-      $mat = $objControlEvidencia->listar();
-      break;
-  }
-} catch (Exception $objExp) {
-  echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
-}
-
-?>
 
 <!doctype html>
 <html lang="en">
@@ -189,31 +110,39 @@ try {
       </a>
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="visEvidencia.php" class="nav-link active text-white" aria-current="page">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-              Evidencias
-            </a>
-          </li>
-          <li>
-            <a href="visPersona.php" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
-              Personas
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-              Autores
-            </a>
-          </li>
-          <li>
-            <a href="visUsuario.php" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-              Usuarios
-            </a>
-          </li>
-        </ul>
+        <li class="nav-item">
+          <a href="visEvidencia.php" class="nav-link active text-white" aria-current="page">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#home" />
+            </svg>
+            Evidencias
+          </a>
+        </li>
+        <li>
+          <a href="visPersona.php" class="nav-link  text-white">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#speedometer2" />
+            </svg>
+            Personas
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#table" />
+            </svg>
+            Autores
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#people-circle" />
+            </svg>
+            Usuario
+          </a>
+        </li>
+      </ul>
       <hr>
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -223,8 +152,9 @@ try {
       </div>
     </div>
     <div class="b-example-divider"></div>
-   
-          <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 80%; ">
+    <!-- Button trigger modal -->
+    
+          <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 60%">
             <h1 class="mb-3">Evidencias</h1>
               <form name="formEv" action="visEvidencia.php" method="post">
                 <div class="row">
@@ -316,6 +246,7 @@ try {
                     </div>
                   </div>
                 </div>
+                
                   <div class="row">
                       <div class="col">
                         <div class="row">
@@ -336,18 +267,28 @@ try {
                             </div>
                         </div>
                       </div> 
-                    </div>
-                  </form>
-                  <hr>
-<br>
-                  <!-- table -->
-    <div class="container-xl">
+                </div>
+          </form>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="container-xl">
     <div class="table-responsive">
       <div class="table-wrapper">
         <div class="table-title">
           <div class="row">
             <div class="col-sm-5">
-              <h2>Listado de <b>evidencias</b></h2>
+              <h2>User <b>Management</b></h2>
+            </div>
+            <div class="col-sm-7">
+              <a href="#" class="btn btn-secondary"><i class="material-icons" data-bs-toggle="modal" data-bs-target="#exampleModal"></i> <span>Nueva evidencia</span></a>
             </div>
           </div>
         </div>
@@ -370,35 +311,56 @@ try {
             </tr>
           </thead>
           <tbody>
-          <?php
-            foreach ( $mat as $r ):
-                    ?>
-                    <tr>
-                    <?php
-                    foreach ( $r as $v ):
-                    ?>
-                            <td><?php echo $v;?></td>
-                    <?php
-                    endforeach;
-                    ?>
-                    </tr>
-            <?php
-            endforeach;
-            ?>
+            <tr>
+              <td>1</td>
+              <td><a href="#"><img src="/examples/images/avatar/1.jpg" class="avatar" alt="Avatar"> Michael Holz</a></td>
+              <td>04/10/2013</td>
+              <td>Admin</td>
+              <td><span class="status text-success">•</span> Active</td>
+              <td>
+                <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons"></i></a>
+                <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
+              </td>
+            </tr>
+            
           </tbody>
         </table>
 
+        <div class="clearfix">
+          <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+            <ul class="pagination">
+              <li class="page-item disabled"><a href="#">Previous</a></li>
+              <li class="page-item"><a href="#" class="page-link">1</a></li>
+              <li class="page-item"><a href="#" class="page-link">2</a></li>
+              <li class="page-item active"><a href="#" class="page-link">3</a></li>
+              <li class="page-item"><a href="#" class="page-link">4</a></li>
+              <li class="page-item"><a href="#" class="page-link">5</a></li>
+              <li class="page-item"><a href="#" class="page-link">Next</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-  
-    <!-- table -->
-    </div>
+  </div>
   </main>
 
   
   <table border="1">
-       
-    </table>
+        <?php
+        foreach ( $mat as $r ):
+                ?>
+                <tr>
+                <?php
+                foreach ( $r as $v ):
+                ?>
+                        <td><?php echo $v;?></td>
+                <?php
+                endforeach;
+                ?>
+                </tr>
+        <?php
+        endforeach;
+        ?>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 

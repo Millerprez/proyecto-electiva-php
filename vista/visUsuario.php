@@ -1,50 +1,50 @@
 <?php
-  include("../modelo/Persona.php");
+  include("../modelo/regUsuario.php");
   include("../control/controlConexion.php");
-  include("../control/ctrPersona.php");
+  include("../control/ctrUsuario.php");
 
-  $id       = ""; 
-  $nombre   = ""; 
+  $id       = "";  
   $cedula   = ""; 
-  $correo   = "";
+  $clave   = "";
+  $tipoUsuario   = "";
   $bot      = "";
-  $listaPersonas = []; 
+  $listaUusuarios = []; 
 
   try{
     if(isset($_POST["txtId"])) $id          = $_POST["txtId"] ;
-    if(isset($_POST['txtNombre'])) $nombre  = $_POST['txtNombre'];
     if(isset($_POST['txtCedula'])) $cedula  = $_POST['txtCedula'];
-    if(isset($_POST['txtCorreo'])) $correo  = $_POST['txtCorreo'];
+    if(isset($_POST['txtClave'])) $clave  = $_POST['txtClave'];
+    if(isset($_POST['txttipoUser'])) $tipoUsuario  = $_POST['txttipoUser'];
     if(isset($_POST['btn']))$bot = $_POST['btn'];
 
     switch ($bot) {
       case "Guardar":
-          $objPersona = new Persona($id,$nombre,$cedula,$correo, "");
-          $objControlPersona = new ctrPersona($objPersona);
-          $objControlPersona->guardar();
+          $objRegUsuario = new regUsuario($id,$cedula,$clave,$tipoUsuario);
+          $objControlRegUsuario = new ctrUsuario($objRegUsuario);
+          $objControlRegUsuario->guardar();
           break;
       case "Consultar":
-            $objPersona = new Persona($id,"","","","");
-            $objControlPersona = new ctrPersona($objPersona);
-            $objPersona = $objControlPersona->consultar();
-            $cedula = $objPersona->getCedula();
-            $nombre = $objPersona->getNombre();
-            $correo  = $objPersona->getCorreo();
+            $objRegUsuario = new regUsuario($id,"","","");
+            $objControlRegUsuario = new ctrUsuario($objRegUsuario);
+            $objRegUsuario = $objControlRegUsuario->consultar();
+            $cedula = $objRegUsuario->getCedula();
+            $clave = $objRegUsuario->getClave();
+            $tipoUsuario  = $objRegUsuario->getTipoUsuario();
             break;
         case "Modificar":
-            $objPersona = new Persona($id,$nombre,$cedula,$correo,"");
-            $objControlPersona = new ctrPersona($objPersona);
-            $objPersona = $objControlPersona->modificar();
+            $objRegUsuario = new regUsuario($id,$cedula,$clave,$tipoUsuario);
+            $objControlRegUsuario = new ctrUsuario($objRegUsuario);
+            $objRegUsuario = $objControlRegUsuario->modificar();
          break;
         case "Borrar":
-            $objPersona = new Persona($id,"","","","");
-            $objControlPersona = new ctrPersona($objPersona);
-            $objPersona = $objControlPersona->borrar();
+            $objRegUsuario = new regUsuario($id,"","","","");
+            $objControlRegUsuario = new ctrUsuario($objRegUsuario);
+            $objRegUsuario = $objControlRegUsuario->borrar();
             break;  
         case "Listar":
-            $objPersona = new Persona($id,$nombre,$cedula,$correo,"");
-            $objControlPersona = new ctrPersona($objPersona);
-            $listaPersonas=$objControlPersona->listar();
+            $objRegUsuario = new regUsuario($id,$cedula,$clave,$tipoUsuario);
+            $objControlRegUsuario = new ctrUsuario($objRegUsuario);
+            $listaUusuarios=$objControlRegUsuario->listar();
             break;           
    }
   }
@@ -161,7 +161,7 @@
       <span class="fs-4">Gestión de calidad</span>
     </a>
     <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
+    <ul class="nav nav-pills flex-column mb-auto">
           <li class="nav-item">
             <a href="visEvidencia.php" class="nav-link text-white" aria-current="page">
               <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
@@ -169,7 +169,7 @@
             </a>
           </li>
           <li>
-            <a href="visPersona.php" class="nav-link active text-white">
+            <a href="visPersona.php" class="nav-link text-white">
               <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
               Personas
             </a>
@@ -181,7 +181,7 @@
             </a>
           </li>
           <li>
-            <a href="visUsuario.php" class="nav-link text-white">
+            <a href="visUsuario.php" class="nav-link active text-white">
               <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
               Usuarios
             </a>
@@ -198,8 +198,8 @@
   <div class="b-example-divider"></div>
 
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 60%">
-      <h1 class="mb-3">Personas</h1>
-        <form name="formEv" action="visPersona.php" method="post" class=" mb-auto text-center">
+      <h1 class="mb-3">Usuario</h1>
+        <form name="formEv" action="visUsuario.php" method="post" class="mb-auto text-center">
             <div class="row">
                 <div class="col">
                   <div class="form-floating mb-3">
@@ -209,20 +209,20 @@
                 </div>
                 <div class="col">
                   <div class="form-floating mb-3">
-                    <input name="txtNombre" type="text" class="form-control" value="<?php echo $nombre?>" id="floatingInput2" placeholder="">
-                    <label for="floatingInput2">Nombre</label>
+                    <input name="txtCedula" type="text" class="form-control" value="<?php echo $cedula?>" id="floatingInput2" placeholder="">
+                    <label for="floatingInput2">Cedula</label>
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-floating mb-3">
-                    <input name="txtCedula" type="text" class="form-control" value="<?php echo $cedula?>" id="floatingInput3" placeholder="">
-                    <label for="floatingInput3">Cédula</label>
+                    <input name="txtClave" type="text" class="form-control" value="<?php echo $clave?>" id="floatingInput3" placeholder="">
+                    <label for="floatingInput3">Clave</label>
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-floating mb-3">
-                    <input name="txtCorreo" type="text" class="form-control" value="<?php echo $correo?>" id="floatingInput3" placeholder="">
-                    <label for="floatingInput3">Correo</label>
+                    <input name="txttipoUser" type="text" class="form-control" value="<?php echo $tipoUsuario?>" id="floatingInput3" placeholder="">
+                    <label for="floatingInput3">Tipo Usuario</label>
                   </div>
                 </div> 
             </div>
@@ -256,18 +256,18 @@
           <thead class="thead-dark">
             <tr>
               <th scope="col">id</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Cédula</th>
-              <th scope="col">Correo</th>
+              <th scope="col">Cedula</th>
+              <th scope="col">Clave</th>
+              <th scope="col">Tipo Usuario</th>
             </tr>
           </thead>
           <tbody>
             <?php
-            foreach ( $listaPersonas as $persona ):
+            foreach ( $listaUusuarios as $usuario ):
                     ?>
                     <tr>
                     <?php
-                    foreach ( $persona as $p ):
+                    foreach ( $usuario as $p ):
                     ?>
                             <td><?php echo $p;?></td>
                     <?php

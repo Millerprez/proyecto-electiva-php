@@ -60,7 +60,7 @@
             $numls = $this->objEvidencia->getNumeral();
             $parag = $this->objEvidencia->getParagrafo();
             $fec   = $this->objEvidencia->getFecha();
-            $corx  = $this->objEvidencia->getCordenadasX();
+            $corx  = $this->objEvidencia->getCordenadaX();
             $cory  = $this->objEvidencia->getCordenadasY();
             $obse  = $this->objEvidencia->getObservacion();
             $estad = $this->objEvidencia->getEstado();
@@ -113,7 +113,7 @@
                     $this->objEvidencia->setNumeral($row['fkidnumeral']);
                     $this->objEvidencia->setParagrafo($row['fkidparagrafo']);
                     $this->objEvidencia->setFecha($row['FECHA']);
-                    $this->objEvidencia->setCordenadasX($row['CORDENADA_X']);
+                    $this->objEvidencia->setCordenadaX($row['CORDENADA_X']);
                     $this->objEvidencia->setCordenadasY($row['CORDENADA_Y']);
                     $this->objEvidencia->setObservacion($row['OBSERVACION']);
                     $this->objEvidencia->setEstado($row['ESTADO']);
