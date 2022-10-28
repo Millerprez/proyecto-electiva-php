@@ -19,8 +19,6 @@
         $numeral,$paragrafo,$fecha,$cordenadaX,$cordenadaY,$observacion,$estado,
                  $nombreEvidencia
             ) {
-
-            echo "Cor en contructor -- ".$cordenadaX;
             $this-> id = $id ;
             $this-> titulo = $titulo;
             $this-> autor = $autor;
@@ -34,7 +32,6 @@
             $this-> estado = $estado;
             $this-> nombreEvidencia = $nombreEvidencia;
 
-            echo "---Cor con el dis----".$this->cordenadaX;
         }
 
         function getId(){

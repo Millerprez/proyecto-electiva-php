@@ -153,8 +153,42 @@
             return $mat;
         }
 
+        function listarNumerales(){
+            $mat=[];
+            $i=0;
+
+            $sql="SELECT id, descripcion FROM tblnumeral";
+            $objControlConexion = new ControlConexion();
+            $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
+            $recordSet=$objControlConexion->ejecutarSelect($sql);
+            while($row = $recordSet->fetch_array(MYSQLI_BOTH)){
+                $mat[$i][0]=$row['id'];
+                $mat[$i][1]=$row['descripcion'];
+                $i++;
+            }
+             
+            $objControlConexion->cerrarBd();
+            return $mat;
+
+        }
+
+        function listarParagrafos(){
+            $mat=[];
+            $i=0;
+
+            $sql="SELECT id, descripcion FROM tblparagrafo";
+            $objControlConexion = new ControlConexion();
+            $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
+            $recordSet=$objControlConexion->ejecutarSelect($sql);
+            while($row = $recordSet->fetch_array(MYSQLI_BOTH)){
+                $mat[$i][0]=$row['id'];
+                $mat[$i][1]=$row['descripcion'];
+                $i++;
+            }
+             
+            $objControlConexion->cerrarBd();
+            return $mat;
+
+        }
 
     }
-
-
-?>

@@ -17,6 +17,15 @@ $estad = "";
 $nomEv = "";
 $bot = "";
 $mat = [];
+$matNumeral = [];
+$matParagrafo = [];
+
+$objEvidencia = new Evidencia("", "", "", "", "", "", "", "", "", "", "", "");
+$objControlEvidencia = new ctrEvidencia($objEvidencia);
+$mat = $objControlEvidencia->listar();
+$matNumeral = $objControlEvidencia->listarNumerales();
+$matParagrafo = $objControlEvidencia->listarParagrafos();
+
 try {
   if (isset($_POST["txtID"])) $id                 = $_POST["txtID"];
   if (isset($_POST['txtTitulo'])) $tit            = $_POST['txtTitulo'];
@@ -66,10 +75,7 @@ try {
       $objControlEvidencia = new ctrEvidencia($objEvidencia);
       $objEvidencia = $objControlEvidencia->borrar();
       break;
-    case "Listar":
-      $objEvidencia = new Evidencia("", "", "", "", "", "", "", "", "", "", "", "");
-      $objControlEvidencia = new ctrEvidencia($objEvidencia);
-      $mat = $objControlEvidencia->listar();
+
       break;
   }
 } catch (Exception $objExp) {
@@ -93,7 +99,7 @@ try {
 
 
 
-  <!-- Bootstrap core CSS --> 
+  <!-- Bootstrap core CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
@@ -189,31 +195,39 @@ try {
       </a>
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="visEvidencia.php" class="nav-link active text-white" aria-current="page">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
-              Evidencias
-            </a>
-          </li>
-          <li>
-            <a href="visPersona.php" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
-              Personas
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-              Autores
-            </a>
-          </li>
-          <li>
-            <a href="visUsuario.php" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-              Usuarios
-            </a>
-          </li>
-        </ul>
+        <li class="nav-item">
+          <a href="visEvidencia.php" class="nav-link active text-white" aria-current="page">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#home" />
+            </svg>
+            Evidencias
+          </a>
+        </li>
+        <li>
+          <a href="visPersona.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#speedometer2" />
+            </svg>
+            Personas
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#table" />
+            </svg>
+            Autores
+          </a>
+        </li>
+        <li>
+          <a href="visUsuario.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#people-circle" />
+            </svg>
+            Usuarios
+          </a>
+        </li>
+      </ul>
       <hr>
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -223,182 +237,200 @@ try {
       </div>
     </div>
     <div class="b-example-divider"></div>
-   
-          <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 80%; ">
-            <h1 class="mb-3">Evidencias</h1>
-              <form name="formEv" action="visEvidencia.php" method="post">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtID" type="text" class="form-control" value="<?php echo $id?>" id="floatingInput" placeholder="" >
-                      <label for="floatingInput"> Id</label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtTitulo" type="text" class="form-control" value="<?php echo $tit?>" id="floatingInput2" placeholder="">
-                      <label for="floatingInput2">Título</label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtAutor" type="text" class="form-control" value="<?php echo $auEvi?>" id="floatingInput3" placeholder="">
-                      <label for="floatingInput3">Autor</label>
-                    </div>
-                  </div>  
-                  <div class="col">
-                    <div class=" form-floating mb-3">
-                      <select name="ddTipoEvi" class="form-select" aria-label="Default select example" value="<?php echo $cond?>" >
-                        <option selected value=" ">Selecione tipo de evidencia</option>
-                        <option value="a">Mecanismos de selección y evaluación de estudiantes y profesores </option>
-                        <option value="b">Estructura administrativa y académica </option>
-                        <option value="c">Cultura de la autoevaluación </option>
-                        <option value="d">Programa de egresados </option>
-                        <option value="e">Modelo de bienestar </option>
-                        <option value="f">Recursos suficientes para garantizar el cumplimiento de las metas </option>
-                      </select>
-                    </div>
-                  </div> 
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                        <input name="txtNumerales" type="text" class="form-control" value="<?php echo $numls?>"  id="floatingInput8" placeholder="">
-                        <label for="floatingInput8">Numerales</label>
-                      </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                        <input name="txtParagrafos" type="text" class="form-control" value="<?php echo $parag?>" id="floatingInput9" placeholder="">
-                        <label for="floatingInput9">Parágrafos</label>
-                      </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtFecha" type="date" class="form-control" value="<?php echo $fec?>" id="floatingInput10" placeholder="">
-                      <label for="floatingInput10">Fecha</label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtParalelo" type="text" class="form-control" value="<?php echo $corx?>" id="floatingInput11"  placeholder="">
-                      <label for="floatingInput11"> Paralelo </label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtMeridiano" type="text" class="form-control" value="<?php echo $cory?>" id="floatingInput12" placeholder="">
-                      <label for="floatingInput12">Meridiano</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                      <div class="form-floating mb-3">
-                        <input name="txtObservacion" type="text" class="form-control" value="<?php echo $obse?>"  id="floatingInput13" placeholder="">
-                        <label for="floatingInput13">Observación</label>
-                      </div>
-                    </div>
-                </div>                        
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtEstado" type="text" class="form-control" value="<?php echo $estad?>"  id="floatingInput14" placeholder="">
-                      <label for="floatingInput14">Estado</label>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-floating mb-3">
-                      <input name="txtNombreEvidencia" type="text" class="form-control" value="<?php echo $nomEv?>" id="floatingInput15" placeholder="">
-                      <label for="floatingInput15">Evidencia</label>
-                    </div>
-                  </div>
-                </div>
-                  <div class="row">
-                      <div class="col">
-                        <div class="row">
-                            <div class="col">
-                              <input type="submit" class="btn btn-success" value="Guardar" name="btn"/>
-                            </div>
-                            <div class="col">
-                              <input type="submit" class="btn btn-primary" value="Consultar" name="btn"/>
-                            </div>
-                            <div class="col">
-                              <input type="submit" class="btn btn-primary" value="Modificar" name="btn"/>
-                            </div>
-                            <div class="col">
-                              <input type="submit" class="btn btn-primary" value="Listar" name="btn"/>
-                            </div>
-                            <div class="col">
-                              <input type="submit" class="btn btn-danger" value="Borrar" name="btn"/>
-                            </div>
-                        </div>
-                      </div> 
-                    </div>
-                  </form>
-                  <hr>
-<br>
-                  <!-- table -->
-    <div class="container-xl">
-    <div class="table-responsive">
-      <div class="table-wrapper">
-        <div class="table-title">
-          <div class="row">
-            <div class="col-sm-5">
-              <h2>Listado de <b>evidencias</b></h2>
+
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 80%; ">
+      <h1 class="mb-3">Evidencias</h1>
+      <form name="formEv" action="visEvidencia.php" method="post">
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtID" type="text" class="form-control" value="<?php echo $id ?>" id="floatingInput" placeholder="">
+              <label for="floatingInput"> Id</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtTitulo" type="text" class="form-control" value="<?php echo $tit ?>" id="floatingInput2" placeholder="">
+              <label for="floatingInput2">Título</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3 input-group mb-3">
+              <input name="txtAutor" type="text" class="form-control" value="<?php echo $auEvi ?>" id="floatingInput3" placeholder="">
+              <label for="floatingInput3">Autor</label>
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtNombreAutor" type="text" class="form-control" value="<?php echo $tit ?>" id="floatingInput2" disabled>
+              <label for="floatingInput2">Nombre Autor</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class=" form-floating mb-3">
+              <select name="ddTipoEvi" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
+                <option selected value=" ">Selecione tipo de evidencia</option>
+                <option value="a">Mecanismos de selección y evaluación de estudiantes y profesores </option>
+                <option value="b">Estructura administrativa y académica </option>
+                <option value="c">Cultura de la autoevaluación </option>
+                <option value="d">Programa de egresados </option>
+                <option value="e">Modelo de bienestar </option>
+                <option value="f">Recursos suficientes para garantizar el cumplimiento de las metas </option>
+              </select>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col">
+            <div class=" form-floating mb-3">
+              <select name="ddTipoEvi" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
+                <option selected value=" ">Selecione el numeral</option>
+                <?php for ($i = 0; $i < sizeof($matNumeral); $i++) { ?>
+                  <option value="<?php echo $matNumeral[$i][0]; ?>"><?php echo $matNumeral[$i][1]; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class=" form-floating mb-3">
+              <select name="ddTipoEvi" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
+                <option selected value=" ">Selecione el paragrafo</option>
+                <?php for ($i = 0; $i < sizeof($matParagrafo); $i++) { ?>
+                  <option value="<?php echo $matParagrafo[$i][0]; ?>"><?php echo $matParagrafo[$i][1]; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtFecha" type="date" class="form-control" value="<?php echo $fec ?>" id="floatingInput10" placeholder="">
+              <label for="floatingInput10">Fecha</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtParalelo" type="text" class="form-control" value="<?php echo $corx ?>" id="floatingInput11" placeholder="">
+              <label for="floatingInput11"> Paralelo </label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtMeridiano" type="text" class="form-control" value="<?php echo $cory ?>" id="floatingInput12" placeholder="">
+              <label for="floatingInput12">Meridiano</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtObservacion" type="text" class="form-control" value="<?php echo $obse ?>" id="floatingInput13" placeholder="">
+              <label for="floatingInput13">Observación</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtEstado" type="text" class="form-control" value="<?php echo $estad ?>" id="floatingInput14" placeholder="">
+              <label for="floatingInput14">Estado</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtNombreEvidencia" type="text" class="form-control" value="<?php echo $nomEv ?>" id="floatingInput15" placeholder="">
+              <label for="floatingInput15">Evidencia</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <input type="submit" class="btn btn-success" value="Guardar" name="btn" />
+              </div>
+              <div class="col">
+                <input type="submit" class="btn btn-primary" value="Consultar" name="btn" />
+              </div>
+              <div class="col">
+                <input type="submit" class="btn btn-primary" value="Modificar" name="btn" />
+              </div>
+              <div class="col">
+                <input type="submit" class="btn btn-primary" value="Listar" name="btn" />
+              </div>
+              <div class="col">
+                <input type="submit" class="btn btn-danger" value="Borrar" name="btn" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <br>
+      <!-- table -->
+      <div class="container-xl">
+        <div class="table-responsive">
+          <div class="table-wrapper">
+            <div class="table-title">
+              <div class="row">
+                <div class="col-sm-5">
+                  <h2>Listado de <b>evidencias</b></h2>
+                </div>
+              </div>
+            </div>
 
-        <table class="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Titulo</th>
-              <th>Autor</th>
-              <th>Condicion</th>
-              <th>Numeral</th>
-              <th>Paragrafo</th>
-              <th>Fecha</th>
-              <th>Paralelo</th>
-              <th>Mediriano</th> 
-              <th>Estado</th>
-              <th>Observacion</th>
-              <th>Nombre de la evidencia</th>
-            </tr>
-          </thead>
-          <tbody>
-          <?php
-            foreach ( $mat as $r ):
-                    ?>
-                    <tr>
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Titulo</th>
+                  <th>Autor</th>
+                  <th>Condicion</th>
+                  <th>Numeral</th>
+                  <th>Paragrafo</th>
+                  <th>Fecha</th>
+                  <th>Paralelo</th>
+                  <th>Mediriano</th>
+                  <th>Estado</th>
+                  <th>Observacion</th>
+                  <th>Nombre de la evidencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                foreach ($mat as $r) :
+                ?>
+                  <tr>
                     <?php
-                    foreach ( $r as $v ):
+                    foreach ($r as $v) :
                     ?>
-                            <td><?php echo $v;?></td>
+                      <td><?php echo $v; ?></td>
                     <?php
                     endforeach;
                     ?>
-                    </tr>
-            <?php
-            endforeach;
-            ?>
-          </tbody>
-        </table>
+                  </tr>
+                <?php
+                endforeach;
+                ?>
+              </tbody>
+            </table>
 
+          </div>
+        </div>
+
+        <!-- table -->
       </div>
-    </div>
-  
-    <!-- table -->
-    </div>
   </main>
 
-  
+
   <table border="1">
-       
-    </table>
+
+  </table>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
