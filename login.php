@@ -22,9 +22,10 @@
 			  $valid = $objControlLogin->ValidarIngreso();
 			   
 			  if ($valid){
-                header("Location: http://localhost/app-elect-global/index.php", TRUE, 301);
+				//Miller location: http://localhost/App/proyecto-electiva-php/index.php
+				//Duvan location:  http://localhost/app-elect-global/index.php
+                header("Location: http://localhost/App/proyecto-electiva-php/index.php", TRUE, 301);
               } else {
-                //header("Location: http://localhost/app-elect-global/index.php", TRUE, 301);
                 $msg = "Usuario o clave incorrecta";
               }
 
@@ -74,11 +75,11 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input name="txtId" type="text" class="form-control" placeholder="Identificacion">
+						<input required name="txtId" type="text" class="form-control" placeholder="Identificacion">
 						
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-				 		<input name="txtClave" type="password" class="form-control" placeholder="Contrasena">
+				 		<input required name="txtClave" type="password" class="form-control" placeholder="Contrasena">
 					</div>
 					<div class="form-group">
 						<input type="submit" value="Ingresar" name="btn" class="btn float-right login_btn">

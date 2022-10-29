@@ -1,4 +1,13 @@
 <?php
+ try{
+
+  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
+  $bot = "";
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    header("Location:".$direccionMiller, TRUE, 301);
+  }
+
 include("../modelo/Evidencia.php");
 include("../control/controlConexion.php");
 include("../control/ctrEvidencia.php");
@@ -87,6 +96,19 @@ try {
       break;
   }
 } catch (Exception $objExp) {
+  echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
+}
+
+ if(isset($_POST['btn']))$bot = $_POST['btn'];
+  switch ($bot) {
+    case "salir":
+      session_start();
+      session_destroy();
+      //Recuerda cambiar la dirección
+      header("Location:".$direccionMiller, TRUE, 301);
+    break;
+  }
+} catch(Exception $objExp){
   echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
 }
 
@@ -211,20 +233,15 @@ try {
             Evidencias
           </a>
         </li>
+        <?php 
+        if($_SESSION['perfil'] == "admin" ){
+      ?>
         <li>
           <a href="visPersona.php" class="nav-link text-white">
             <svg class="bi me-2" width="16" height="16">
               <use xlink:href="#speedometer2" />
             </svg>
             Personas
-          </a>
-        </li>
-        <li>
-          <a href="#" class="nav-link text-white">
-            <svg class="bi me-2" width="16" height="16">
-              <use xlink:href="#table" />
-            </svg>
-            Autores
           </a>
         </li>
         <li>
@@ -235,14 +252,19 @@ try {
             Usuarios
           </a>
         </li>
+        <?php 
+      }
+      ?>
       </ul>
       <hr>
-      <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
-          <strong>Grupo ITM</strong>
-        </a>
+      <form action="visEvidencia.php" method="post" class="mb-auto text-center">	
+        <div class="dropdown">
+          <input type="submit" value="salir" name="btn" class="btn d-flex align-items-center text-white text-decoration-none dropdown-toggle"  aria-expanded="false">
+            <!-- <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>Cerrar sesión</strong> -->
+        </input>
       </div>
+    </form>
     </div>
     <div class="b-example-divider"></div>
 

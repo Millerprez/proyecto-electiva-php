@@ -1,3 +1,26 @@
+<?php 
+ try{
+  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
+  $bot = "";
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    header("Location:".$direccionMiller, TRUE, 301);
+  }
+
+ 
+    if(isset($_POST['btn']))$bot = $_POST['btn'];
+    switch ($bot) {
+      case "salir":
+        session_destroy();
+        //Recuerda cambiar la dirección
+        header("Location:".$direccionMiller, TRUE, 301);
+      break;
+    }
+  } catch(Exception $objExp){
+
+  }
+  
+?>
 
 <!doctype html>
 <html lang="en">
@@ -108,11 +131,14 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">
+        <a href="vista/visEvidencia.php" class="nav-link active" aria-current="page">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
           Evidencias
         </a>
       </li>
+      <?php 
+        if($_SESSION['perfil'] == "admin" ){
+      ?>
       <li>
         <a href="vista/visPersona.php" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
@@ -120,25 +146,24 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-          Autores
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link text-white">
+        <a href="vista/visUsuario.php" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
           Usuario
         </a>
       </li>
+      <?php 
+      }
+      ?>
     </ul>
     <hr>
+    <form action="index.php" method="post" class="mb-auto text-center">	
     <div class="dropdown">
-      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
-        <strong>Grupo ITM</strong>
-      </a>
+      <input type="submit" value="salir" name="btn" class="btn d-flex align-items-center text-white text-decoration-none dropdown-toggle"  aria-expanded="false">
+        <!-- <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <strong>Cerrar sesión</strong> -->
+    </input>
     </div>
+    </form>
   </div>
 
   <div class="b-example-divider"></div>
@@ -151,3 +176,4 @@
       <script src="sidebars.js"></script>
   </body>
 </html>
+

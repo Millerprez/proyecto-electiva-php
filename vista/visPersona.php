@@ -1,4 +1,19 @@
 <?php
+  try{
+
+  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
+  $indexMiller = "http://localhost/App/proyecto-electiva-php/index.php";
+
+  $bot = "";
+  session_start();
+  if(!isset($_SESSION['usuario'])){
+    header("Location:".$direccionMiller, TRUE, 301);
+  }
+
+  if(isset($_SESSION['usuario']) && $_SESSION['perfil'] != "admin"){
+    header("Location:".$indexMiller, TRUE, 301);
+  }
+
   include("../modelo/Persona.php");
   include("../control/controlConexion.php");
   include("../control/ctrPersona.php");
@@ -51,6 +66,19 @@
   catch (Exception $objExp) {
       echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
   }
+
+  if(isset($_POST['btn']))$bot = $_POST['btn'];
+  switch ($bot) {
+    case "salir":
+      session_start();
+      session_destroy();
+      //Recuerda cambiar la dirección
+      header("Location:".$direccionMiller, TRUE, 301);
+    break;
+  }
+} catch(Exception $objExp){
+  echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
+}
 
 ?>
 
@@ -175,12 +203,6 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-              Autores
-            </a>
-          </li>
-          <li>
             <a href="visUsuario.php" class="nav-link text-white">
               <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
               Usuarios
@@ -188,12 +210,14 @@
           </li>
         </ul>
       <hr>
-      <div class="dropdown">
-      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
-        <strong>Grupo ITM</strong>
-      </a>
+      <form action="visPersona.php" method="post" class="mb-auto text-center">	
+    <div class="dropdown">
+      <input type="submit" value="salir" name="btn" class="btn d-flex align-items-center text-white text-decoration-none dropdown-toggle"  aria-expanded="false">
+        <!-- <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <strong>Cerrar sesión</strong> -->
+    </input>
     </div>
+    </form>
   </div>
   <div class="b-example-divider"></div>
 

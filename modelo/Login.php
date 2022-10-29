@@ -4,10 +4,12 @@
 
         var $id;
         var $clave;
+        
 
         function __construct($id, $clave){
             $this-> id = $id;
             $this-> clave = $clave;
+ 
         }
 
         function getId() {
