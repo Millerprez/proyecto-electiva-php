@@ -13,24 +13,25 @@
 
             $id = $this->objLogin->getId();
             $clave = $this->objLogin->getClave();
-            $sql="SELECT clave FROM tblusuario WHERE fkidPersona='".$id."'";
-   
+            $sql="SELECT clave, tipo_usuario FROM tblusuario WHERE id='".$id."'";
+            
             $objControlConexion = new ControlConexion();
             $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
             $recordSet=$objControlConexion->ejecutarSelect($sql);
             $registro = $recordSet->fetch_array(MYSQLI_BOTH);
 			$objUsuario1->setClave($registro['clave']); //contra consultada
-
+            $perfil = (string) $registro['tipo_usuario']; //perfil consultada
+            
             if($objUsuario1->getClave() == $this->objLogin->getClave()){
-                    echo "ingresó";
+                    session_start();
+                    $_SESSION['usuario'] =  $id;
+            	    //$_SESSION['clave']=  $clave;
+                    $_SESSION['perfil']=  $perfil;
                     $objControlConexion->cerrarBd();
                     return true;
-                } else {
-                    
+            } else {     
                     $objControlConexion->cerrarBd();
-                    return false;
-                    
-                    
+                    return false;  
                 }
             }
            
