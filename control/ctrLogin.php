@@ -13,7 +13,7 @@
 
             $id = $this->objLogin->getId();
             $clave = $this->objLogin->getClave();
-            $sql="SELECT clave, tipo_usuario FROM tblusuario WHERE id='".$id."'";
+            $sql="SELECT clave, tipo_usuario FROM tblusuario WHERE fkidPersona='".$id."'";
             
             $objControlConexion = new ControlConexion();
             $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);

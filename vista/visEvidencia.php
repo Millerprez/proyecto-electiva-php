@@ -1,7 +1,7 @@
 <?php
  try{
 
-  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
+  $direccionMiller = "http://localhost/php/proyecto-electiva-php/login.php";
   $bot = "";
   session_start();
   if(!isset($_SESSION['usuario'])){

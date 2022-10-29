@@ -1,8 +1,8 @@
 <?php
   try{
 
-  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
-  $indexMiller = "http://localhost/App/proyecto-electiva-php/index.php";
+  $direccionMiller = "http://localhost/php/proyecto-electiva-php/login.php";
+  $indexMiller = "http://localhost/php/proyecto-electiva-php/index.php";
 
   $bot = "";
   session_start();
