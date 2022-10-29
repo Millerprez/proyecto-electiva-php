@@ -68,7 +68,7 @@
             $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
             $recordSet=$objControlConexion->ejecutarSelect($sql);
             while($row = $recordSet->fetch_array(MYSQLI_BOTH)){
-                if($row['estado'] == "activo"){
+                if($row['estado'] == "ACTIVO"){
                     $mat[$i][0]=$row['id'];
                     $mat[$i][1]=$row['nombre'];
                     $mat[$i][2]=$row['cedula'];
@@ -78,6 +78,22 @@
             }
             $objControlConexion->cerrarBd();
             return $mat;
+        }
+
+        function buscarUsuario($ceduUsu){
+            $sql="SELECT nombre FROM tblpersona WHERE cedula='".$ceduUsu."'";
+            $objControlConexion = new ControlConexion();
+            $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
+            $recordSet=$objControlConexion->ejecutarSelect($sql);
+
+            $nombreUsu = "";
+            
+            if($row = $recordSet->fetch_array(MYSQLI_BOTH)){
+                    $nombreUsu = $row['nombre'];
+                }
+
+            $objControlConexion->cerrarBd();
+            return $nombreUsu;
         }
     }
 ?>

@@ -2,6 +2,8 @@
 include("../modelo/Evidencia.php");
 include("../control/controlConexion.php");
 include("../control/ctrEvidencia.php");
+include("../modelo/Persona.php");
+include("../control/ctrPersona.php");
 
 $id    = "";
 $tit   = "";
@@ -16,6 +18,8 @@ $obse  = "";
 $estad = "";
 $nomEv = "";
 $bot = "";
+$idUsu = "";
+$nombreUsu = "";
 $mat = [];
 $matNumeral = [];
 $matParagrafo = [];
@@ -38,13 +42,14 @@ try {
   if (isset($_POST['txtMeridiano'])) $cory        = $_POST['txtMeridiano'];
   if (isset($_POST['txtObservacion'])) $obse      = $_POST['txtObservacion'];
   if (isset($_POST['txtEstado'])) $estad          = $_POST['txtEstado'];
-  if (isset($_POST['txtNombreEvidencia'])) $nomEv = $_POST['txtNombreEvidencia'];
+  if (isset($_POST['txtNombreEvidencia']))$nomEv = $_POST['txtNombreEvidencia'];
+  if (isset($_POST['txtAutor']))$idUsu       = $_POST['txtAutor'];
   if (isset($_POST['btn'])) $bot = $_POST['btn'];
 
   switch ($bot) {
     case "Guardar":
       echo "" . $corx;
-      $objEvidencia = new Evidencia($id, $tit, $auEvi, $cond, $numls, $parag, $fec, $corx, $cory, $obse, $estad, $nomEv);
+      $objEvidencia = new Evidencia($id, $tit, $auEvi, $cond, $numls, $parag, $fec, $corx, $cory, $obse, $estad, "");
       $objControlEvidencia = new ctrEvidencia($objEvidencia);
       $objControlEvidencia->guardar();
       break;
@@ -75,7 +80,10 @@ try {
       $objControlEvidencia = new ctrEvidencia($objEvidencia);
       $objEvidencia = $objControlEvidencia->borrar();
       break;
-
+    case "buscarUsu":
+      $objPersona = new Persona("", "", "", "", "");
+      $objControlPersona = new ctrPersona($objPersona);
+      $nombreUsu = $objControlPersona->buscarUsuario($idUsu);
       break;
   }
 } catch (Exception $objExp) {
@@ -240,7 +248,7 @@ try {
 
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 80%; ">
       <h1 class="mb-3">Evidencias</h1>
-      <form name="formEv" action="visEvidencia.php" method="post">
+      <form name="formEv" action="visEvidencia.php" method="post" enctype="multipart/form-data">
         <div class="row">
           <div class="col">
             <div class="form-floating mb-3">
@@ -258,15 +266,14 @@ try {
             <div class="form-floating mb-3 input-group mb-3">
               <input name="txtAutor" type="text" class="form-control" value="<?php echo $auEvi ?>" id="floatingInput3" placeholder="">
               <label for="floatingInput3">Autor</label>
-              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+              <input class="btn btn-outline-secondary" type="submit" value="buscarUsu" name="btn">
             </div>
           </div>
-
         </div>
         <div class="row">
           <div class="col">
             <div class="form-floating mb-3">
-              <input name="txtNombreAutor" type="text" class="form-control" value="<?php echo $tit ?>" id="floatingInput2" disabled>
+              <input name="txtNombreAutor" type="text" class="form-control" value="<?php echo $nombreUsu ?>" id="floatingInput2" disabled>
               <label for="floatingInput2">Nombre Autor</label>
             </div>
           </div>
@@ -287,8 +294,8 @@ try {
         <div class="row">
           <div class="col">
             <div class=" form-floating mb-3">
-              <select name="ddTipoEvi" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
-                <option selected value=" ">Selecione el numeral</option>
+              <select name="txtNumerales" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
+                <option selected value="0">Selecione el numeral</option>
                 <?php for ($i = 0; $i < sizeof($matNumeral); $i++) { ?>
                   <option value="<?php echo $matNumeral[$i][0]; ?>"><?php echo $matNumeral[$i][1]; ?></option>
                 <?php } ?>
@@ -297,7 +304,7 @@ try {
           </div>
           <div class="col">
             <div class=" form-floating mb-3">
-              <select name="ddTipoEvi" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
+              <select name="txtParagrafos" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
                 <option selected value=" ">Selecione el paragrafo</option>
                 <?php for ($i = 0; $i < sizeof($matParagrafo); $i++) { ?>
                   <option value="<?php echo $matParagrafo[$i][0]; ?>"><?php echo $matParagrafo[$i][1]; ?></option>
@@ -343,8 +350,7 @@ try {
           </div>
           <div class="col">
             <div class="form-floating mb-3">
-              <input name="txtNombreEvidencia" type="text" class="form-control" value="<?php echo $nomEv ?>" id="floatingInput15" placeholder="">
-              <label for="floatingInput15">Evidencia</label>
+              <input type="file" class="form-control" id="inputGroupFile02" name="archivo">
             </div>
           </div>
         </div>

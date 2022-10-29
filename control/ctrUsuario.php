@@ -69,7 +69,6 @@
                 $objControlConexion->cerrarBd();
                 return $mat;
         }
-           
         
     }
 ?>
