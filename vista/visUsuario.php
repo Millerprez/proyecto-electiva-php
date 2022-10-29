@@ -51,10 +51,10 @@
             $objRegUsuario = $objControlRegUsuario->modificar();
          break;
         case "Borrar":
-            $objRegUsuario = new regUsuario($id,"","","","");
-            $objControlRegUsuario = new ctrUsuario($objRegUsuario);
-            $objRegUsuario = $objControlRegUsuario->borrar();
-            break;  
+            // $objRegUsuario = new regUsuario($id,"","","","");
+            // $objControlRegUsuario = new ctrUsuario($objRegUsuario);
+            // $objRegUsuario = $objControlRegUsuario->borrar();
+            // break;  
         case "Listar":
             $objRegUsuario = new regUsuario($id,$cedula,$clave,$tipoUsuario);
             $objControlRegUsuario = new ctrUsuario($objRegUsuario);
