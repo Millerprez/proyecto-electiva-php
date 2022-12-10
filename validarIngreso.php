@@ -98,6 +98,18 @@ try {
 
                     <input type="submit" class="btn btn-info" value="Auditor" name="btn" />
 
+                <?php }
+
+                if ($perfiles[$i] == "3") { ?>
+
+                    <input type="submit" class="btn btn-info" value="Verificador" name="btn" />
+
+                <?php }
+
+                if ($perfiles[$i] == "4") { ?>
+
+                    <input type="submit" class="btn btn-info" value="Validador" name="btn" />
+
         <?php }
             }
         } else {
