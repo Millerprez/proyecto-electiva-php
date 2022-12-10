@@ -1,7 +1,7 @@
 <?php
   try{
 
-  $direccionMiller = "http://localhost/php/proyecto-electiva-php/login.php";
+  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
   $indexMiller = "http://localhost/php/proyecto-electiva-php/index.php";
 
   $bot = "";
@@ -196,18 +196,55 @@
               Evidencias
             </a>
           </li>
-          <li>
-            <a href="visPersona.php" class="nav-link active text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
-              Personas
+          <?php 
+        if($_SESSION['perfil'] == "admin" ){
+      ?>
+      <li>
+        <a href="visPersona.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+          Personas
+        </a>
+      </li>
+      <li>
+        <a href="visUsuario.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+          Usuario
+        </a>
+      </li>
+      <li>
+          <a href="visEvidenciasEstado.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+            Verificar Evidencias
+          </a>
+        </li>
+        <li>
+          <a href="visEvidenciasValidas.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#tools"/></svg>
+            Validar Evidencias
+          </a>
+        </li>
+      <?php 
+      } else
+      if($_SESSION['perfil'] == "verificador" ){
+        ?>
+        <li>
+            <a href="visEvidenciasEstado.php" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+              Verificar Evidencias
             </a>
           </li>
-          <li>
-            <a href="visUsuario.php" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
-              Usuarios
-            </a>
-          </li>
+        <?php 
+        } else if($_SESSION['perfil'] == "validador" ){
+        ?>
+         <li>
+          <a href="visEvidenciasValidas.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#tools"/></svg>
+            Validar Evidencias
+          </a>
+        </li>
+        <?php 
+        }
+      ?>
         </ul>
       <hr>
       <form action="visPersona.php" method="post" class="mb-auto text-center">	

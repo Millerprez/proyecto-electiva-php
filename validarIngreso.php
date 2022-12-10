@@ -29,31 +29,31 @@ try {
             $objControlLogin->asignarPerfil("admin");
             //Miller location: http://localhost/App/proyecto-electiva-php/index.php
             //Duvan location:  http://localhost/app-elect-global/index.php
-            header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
+            header("Location: http://localhost/App/proyecto-electiva-php/index.php", TRUE, 301);
             break;
 
         case "Auditor":
             $objControlLogin->asignarPerfil("auditor");
             //Miller location: http://localhost/App/proyecto-electiva-php/index.php
             //Duvan location:  http://localhost/app-elect-global/index.php
-            header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
+            header("Location: http://localhost/App/proyecto-electiva-php/index.php", TRUE, 301);
             break;
         case "Validador":
             $objControlLogin->asignarPerfil("validador");
             //Miller location: http://localhost/App/proyecto-electiva-php/index.php
             //Duvan location:  http://localhost/app-elect-global/index.php
-            header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
+            header("Location: http://localhost/App/proyecto-electiva-php/index.php", TRUE, 301);
             break;
         case "Verificador":
             $objControlLogin->asignarPerfil("verificador");
             //Miller location: http://localhost/App/proyecto-electiva-php/index.php
             //Duvan location:  http://localhost/app-elect-global/index.php
-            header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
+            header("Location: http://localhost/App/proyecto-electiva-php/index.php", TRUE, 301);
             break;
         case "Aceptar":
             //Miller location: http://localhost/App/proyecto-electiva-php/index.php
             //Duvan location:  http://localhost/app-elect-global/index.php
-            header("Location:  http://localhost/php/proyecto-electiva-php/login.php", TRUE, 301);
+            header("Location:  http://localhost/App/proyecto-electiva-php/login.php", TRUE, 301);
             break;
     }
 } catch (Exception $objExp) {

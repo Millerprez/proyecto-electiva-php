@@ -75,7 +75,6 @@
         }
 
         function getCordenadaX(){
-            echo "Coder en metodo ---- ".$this->cordenadaX;
             return $this->cordenadaX;
         }
 

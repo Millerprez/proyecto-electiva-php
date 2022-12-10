@@ -1,6 +1,6 @@
 <?php 
  try{
-  $direccionMiller = "http://localhost/php/proyecto-electiva-php/login.php";
+  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
   $bot = "";
   session_start();
   if(!isset($_SESSION['usuario'])){
@@ -151,8 +151,39 @@
           Usuario
         </a>
       </li>
+      <li>
+          <a href="vista/visEvidenciasEstado.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+            Verificar Evidencias
+          </a>
+        </li>
+        <li>
+          <a href="vista/visEvidenciasValidas.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#tools"/></svg>
+            Validar Evidencias
+          </a>
+        </li>
       <?php 
-      }
+      } else
+      if($_SESSION['perfil'] == "verificador" ){
+        ?>
+        <li>
+            <a href="vista/visEvidenciasEstado.php" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+              Verificar Evidencias
+            </a>
+          </li>
+        <?php 
+        } else if($_SESSION['perfil'] == "validador" ){
+        ?>
+         <li>
+          <a href="vista/visEvidenciasValidas.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#tools"/></svg>
+            Validar Evidencias
+          </a>
+        </li>
+        <?php 
+        }
       ?>
     </ul>
     <hr>

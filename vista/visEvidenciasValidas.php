@@ -1,84 +1,103 @@
 <?php
-try {
+ try{
 
   $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
-  $indexMiller = "http://localhost/php/proyecto-electiva-php/index.php";
   $bot = "";
   session_start();
-  if (!isset($_SESSION['usuario'])) {
-    header("Location:" . $direccionMiller, TRUE, 301);
-  }
-  //Esto evita que aunque tenga la sesión iniciado si no es admin no vea esta pestaña
-  if (isset($_SESSION['usuario']) && $_SESSION['perfil'] != "admin") {
-    header("Location:" . $indexMiller, TRUE, 301);
+  if(!isset($_SESSION['usuario'])){
+    header("Location:".$direccionMiller, TRUE, 301);
   }
 
-  include("../modelo/regUsuario.php");
-  include("../control/controlConexion.php");
-  include("../control/ctrUsuario.php");
+include("../modelo/Evidencia.php");
+include("../control/controlConexion.php");
+include("../control/ctrEvidencia.php");
 
-  $id       = "";
-  $cedula   = "";
-  $clave   = "";
-  $tipoUsuario   = "";
-  $bot      = "";
-  $listaUusuarios = [];
-  $listaCedulas = [];
+$id    = "";
+$tit   = "";
+$auEvi = "";
+$cond  = "";
+$numls = "";
+$parag = "";
+$fec   = "";
+$corx  = "";
+$cory  = "";
+$obse  = "";
+$estad = "";
+$nomEv = "";
+$bot = "";
+$mat = [];
+$matNumeral = [];
+$matParagrafo = [];
 
-  try {
-    if (isset($_POST["txtId"])) $id          = $_POST["txtId"];
-    if (isset($_POST['txtCedula'])) $cedula  = $_POST['txtCedula'];
-    if (isset($_POST['txtClave'])) $clave  = $_POST['txtClave'];
-    if (isset($_POST['txttipoUser'])) $tipoUsuario  = $_POST['txttipoUser'];
-    if (isset($_POST['btn'])) $bot = $_POST['btn'];
+$objEvidencia = new Evidencia("", "", "", "", "", "", "", "", "", "", "", "");
+$objControlEvidencia = new ctrEvidencia($objEvidencia);
+$mat = $objControlEvidencia->listar();
+$matNumeral = $objControlEvidencia->listarNumerales();
+$matParagrafo = $objControlEvidencia->listarParagrafos();
 
-    $objRegUsuario = new regUsuario($id, $cedula, $clave, $tipoUsuario);
-    $objControlRegUsuario = new ctrUsuario($objRegUsuario);
-    $listaUusuarios = $objControlRegUsuario->listar();
-    $listaCedulas = $objControlRegUsuario->listarCedulas();
-
-    switch ($bot) {
-      case "Guardar":
-        $objRegUsuario = new regUsuario($id, $cedula, $clave, $tipoUsuario);
-        $objControlRegUsuario = new ctrUsuario($objRegUsuario);
-        $objControlRegUsuario->guardar();
-        break;
-      case "Consultar":
-        $objRegUsuario = new regUsuario($id, "", "", "");
-        $objControlRegUsuario = new ctrUsuario($objRegUsuario);
-        $objRegUsuario = $objControlRegUsuario->consultar();
-        $cedula = $objRegUsuario->getCedula();
-        $clave = $objRegUsuario->getClave();
-        $tipoUsuario  = $objRegUsuario->getTipoUsuario();
-        break;
-      case "Modificar":
-        $objRegUsuario = new regUsuario($id, $cedula, $clave, $tipoUsuario);
-        $objControlRegUsuario = new ctrUsuario($objRegUsuario);
-        $objRegUsuario = $objControlRegUsuario->modificar();
-        break;
-      case "Borrar":
-        // $objRegUsuario = new regUsuario($id,"","","","");
-        // $objControlRegUsuario = new ctrUsuario($objRegUsuario);
-        // $objRegUsuario = $objControlRegUsuario->borrar();
-        // break;
-
-        break;
-    }
-  } catch (Exception $objExp) {
-    echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
-  }
-
+try {
+  if (isset($_POST["txtID"])) $id                 = $_POST["txtID"];
+  if (isset($_POST['txtTitulo'])) $tit            = $_POST['txtTitulo'];
+  if (isset($_POST['txtAutor'])) $auEvi           = $_POST['txtAutor'];
+  if (isset($_POST['ddTipoEvi'])) $cond           = $_POST['ddTipoEvi'];
+  if (isset($_POST['txtNumerales'])) $numls       = $_POST['txtNumerales'];
+  if (isset($_POST['txtParagrafos'])) $parag      = $_POST['txtParagrafos'];
+  if (isset($_POST['txtFecha'])) $fec             = $_POST['txtFecha'];
+  if (isset($_POST['txtParalelo'])) $corx         = $_POST['txtParalelo'];
+  if (isset($_POST['txtMeridiano'])) $cory        = $_POST['txtMeridiano'];
+  if (isset($_POST['txtObservacion'])) $obse      = $_POST['txtObservacion'];
+  if (isset($_POST['txtEstado'])) $estad          = $_POST['txtEstado'];
+  if (isset($_POST['txtNombreEvidencia'])) $nomEv = $_POST['txtNombreEvidencia'];
   if (isset($_POST['btn'])) $bot = $_POST['btn'];
-  switch ($bot) {
-    case "salir":
-      session_start();
+  $isVerified = false;
+  $isRegisterOnly = false;
 
-      session_destroy();
-      //Recuerda cambiar la dirección
-      header("Location:" . $direccionMiller, TRUE, 301);
+
+  switch ($bot) {
+    case "Consultar":
+      $objEvidencia = new Evidencia($id, "", "", "", "", "", "", "", "", "", "", "");
+      $objControlEvidencia = new ctrEvidencia($objEvidencia);
+      $objEvidencia = $objControlEvidencia->consultar();
+      if($objEvidencia->getEstado() != "Verificada"){
+        $isRegisterOnly = true;
+      } else {
+        $tit = $objEvidencia->getTitulo();
+        $auEvi = $objEvidencia->getAutor();
+        $cond  = $objEvidencia->getCondicionCalidad();
+        $numls = $objEvidencia->getNumeral();
+        $parag = $objEvidencia->getParagrafo();
+        $fec   = $objEvidencia->getFecha();
+        $corx  = $objEvidencia->getCordenadaX();
+        $cory  = $objEvidencia->getCordenadasY();
+        $obse  = $objEvidencia->getObservacion();
+        $estad = $objEvidencia->getEstado();
+        $nomEv = $objEvidencia->getNombreEvidencia();
+      }
+      
+      //echo phpinfo();
+      break;
+    case "Validar":
+      $objEvidencia = new Evidencia($id, $tit, $auEvi, $cond, $numls, $parag, $fec, $corx, $cory, $obse, "Validada", $nomEv);
+      $objControlEvidencia = new ctrEvidencia($objEvidencia);
+      $objEvidencia = $objControlEvidencia->modificar();
+      $isVerified = true;
+      
       break;
   }
 } catch (Exception $objExp) {
+  echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
+}
+
+ if(isset($_POST['btn']))$bot = $_POST['btn'];
+  switch ($bot) {
+    case "salir":
+      session_start();
+      session_destroy();
+      //Recuerda cambiar la dirección
+      header("Location:".$direccionMiller, TRUE, 301);
+    break;
+  }
+} catch(Exception $objExp){
   echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
 }
 
@@ -101,6 +120,8 @@ try {
 
   <!-- Bootstrap core CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.24/sweetalert2.all.js"></script>
 
 
   <style>
@@ -117,6 +138,10 @@ try {
         font-size: 3.5rem;
       }
     }
+
+    .btn-search {
+        width: 50%;
+    }
   </style>
 
   <!-- Custom styles for this template -->
@@ -124,7 +149,36 @@ try {
 </head>
 
 <body>
-
+<?php
+  if($isRegisterOnly){
+    ?>
+       <script>  
+        Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'La evidencia no se encuentra en estado Verificada',
+            showConfirmButton: false,
+            timer: 2500
+          });
+        </script>
+    <?php
+  }
+  
+  if($isVerified){
+    ?>
+       <script>  
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Evidencia Validada',
+            showConfirmButton: false,
+            timer: 2500
+          });
+        </script>
+    <?php
+  }
+  ?>
+  
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="bootstrap" viewBox="0 0 118 94">
       <title>Bootstrap</title>
@@ -184,7 +238,7 @@ try {
     </symbol>
   </svg>
 
-  <main class="">
+  <main>
     <h1 class="visually-hidden">Sidebar</h1>
 
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; ">
@@ -253,108 +307,250 @@ try {
       ?>
       </ul>
       <hr>
-      <form action="visUsuario.php" method="post" class="mb-auto text-center">
+      <form action="visEvidenciasValidas.php" method="post" class="mb-auto text-center">	
         <div class="dropdown">
-          <input type="submit" value="salir" name="btn" class="btn d-flex align-items-center text-white text-decoration-none dropdown-toggle" aria-expanded="false">
-          <!-- <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
-          <strong>Cerrar sesión</strong> -->
-          </input>
-        </div>
-      </form>
+          <input type="submit" value="salir" name="btn" class="btn d-flex align-items-center text-white text-decoration-none dropdown-toggle"  aria-expanded="false">
+            <!-- <img src="https://interlineales.com/wp-content/uploads/2016/10/dummy-user-img.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>Cerrar sesión</strong> -->
+        </input>
+      </div>
+    </form>
     </div>
     <div class="b-example-divider"></div>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 60%">
-      <h1 class="mb-3">Usuario</h1>
-      <form name="formEv" action="visUsuario.php" method="post" class="mb-auto text-center">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light overflow-auto" style="width: 80%; ">
+      <h1 class="mb-3">Validar Evidencias</h1>
+      <form name="formEv" action="visEvidenciasValidas.php" method="post">
+        <div class="row">
+          <div class="col">
+
+            <div class="form-floating mb-3 input-group mb-3">
+              <input name="txtID" type="text" class="form-control" value="<?php echo $id ?>" id="floatingInput" placeholder="" >
+              <label for="floatingInput"> Id</label>
+              <button class="btn btn-outline-secondary" type="submit" id="button-addon2" value="Consultar" name="btn">Buscar</button>
+
+            </div>
+          </div>
+         
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input readonly name="txtTitulo" type="text" class="form-control" value="<?php echo $tit ?>" id="floatingInput2" placeholder="">
+              <label for="floatingInput2">Título</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3 input-group mb-3">
+              <input name="txtAutor" type="text" class="form-control" value="<?php echo $auEvi ?>" id="floatingInput3" placeholder="" readonly>
+              <label for="floatingInput3">Autor</label>
+              <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button> -->
+            </div>
+          </div>
+
+        </div>
         <div class="row">
           <div class="col">
             <div class="form-floating mb-3">
-              <input name="txtId" type="text" class="form-control" value="<?php echo $id ?>" id="floatingInput" placeholder="">
-              <label for="floatingInput"> Id </label>
+              <input name="txtNombreAutor" type="text" class="form-control" value="<?php echo "" ?>" id="floatingInput2" disabled>
+              <label for="floatingInput2">Nombre Autor</label>
             </div>
           </div>
           <div class="col">
-          <div class=" form-floating mb-3">
-            <select name="txtCedula" class="form-select" aria-label="Default select example" value="<?php echo $cedula ?>">
-              <option selected value="0">Selecione la cedula</option>
-              <?php for ($i = 0; $i < sizeof($listaCedulas); $i++) { ?>
-                <option value="<?php echo $listaCedulas[$i]; ?>"><?php echo $listaCedulas[$i]; ?></option>
-              <?php } ?>
-            </select>
-          </div>
-          </div>
-          <div class="col">
-            <div class="form-floating mb-3">
-              <input name="txtClave" type="text" class="form-control" value="<?php echo $clave ?>" id="floatingInput3" placeholder="">
-              <label for="floatingInput3">Clave</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating mb-3">
-              <input name="txttipoUser" type="text" class="form-control" value="<?php echo $tipoUsuario ?>" id="floatingInput3" placeholder="">
-              <label for="floatingInput3">Tipo Usuario</label>
+            <div class=" form-floating mb-3">
+              <select name="ddTipoEvi" class="form-select" aria-label="Default select example" readonly >
+                <option value="" readonly>Selecione tipo de evidencia</option>
+                <option value="a" readonly <?php if($cond == "a"){ echo "selected"; } ?>>Mecanismos de selección y evaluación de estudiantes y profesores </option>
+                <option value="b" readonly <?php if($cond == "b"){ echo "selected"; } ?>>Estructura administrativa y académica </option>
+                <option value="c" readonly <?php if($cond == "c"){ echo "selected"; } ?>>Cultura de la autoevaluación </option>
+                <option value="d" readonly <?php if($cond == "d"){ echo "selected"; } ?>>Programa de egresados </option>
+                <option value="e" readonly <?php if($cond == "e"){ echo "selected"; } ?>>Modelo de bienestar </option>
+                <option value="f" readonly <?php if($cond == "f"){ echo "selected"; } ?>>Recursos suficientes para garantizar el cumplimiento de las metas </option>
+              </select>
             </div>
           </div>
         </div>
-        <hr>
-
+        <div class="row">
+          <div class="col">
+            <div class=" form-floating mb-3">
+              <select name="txtNumerales" class="form-select" aria-label="Default select example" value="<?php echo $numls ?>">
+                <?php
+                    if($numls != null){
+                        ?>
+                        <option value="<?php echo $numls ?>" readonly>
+                        <?php
+                        for ($i = 0; $i < sizeof($matNumeral); $i++) {
+                                if($numls ==  $matNumeral[$i][0]){
+                                    echo $matNumeral[$i][1];
+                                    break;
+                                }
+                        }
+                        ?>
+                        </option>
+                        <?php
+                    } else {
+                        ?>
+                         <option value="" readonly>Selecione el numeral</option>
+                        <?php
+                    }
+                ?>
+               
+                <?php for ($i = 0; $i < sizeof($matNumeral); $i++) { ?>
+                  <option value="<?php echo $matNumeral[$i][0]; ?>" ><?php echo $matNumeral[$i][1]; ?></option>
+                <?php }
+                    
+                ?>
+            
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class=" form-floating mb-3">
+              <select name="txtParagrafos" class="form-select" aria-label="Default select example" value="<?php echo $parag ?>" readonly>
+            <?php
+              if($parag != null){
+                        ?>
+                        <option value="<?php echo $parag ?>" readonly>
+                        <?php
+                        for ($i = 0; $i < sizeof($matParagrafo); $i++) {
+                                if($parag ==  $matParagrafo[$i][0]){
+                                    echo $matParagrafo[$i][1];
+                                    break;
+                                }
+                        }
+                        ?>
+                        </option>
+                        <?php
+                    } else {
+                        ?>
+                         <option value="" readonly>Selecione el paragrafo</option>
+                        <?php
+                    }
+                    ?>
+                    
+                <?php for ($i = 0; $i < sizeof($matParagrafo); $i++) { ?>
+                  <option value="<?php echo $matParagrafo[$i][0]; ?>" readonly><?php echo $matParagrafo[$i][1]; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtFecha" type="date" class="form-control" value="<?php echo $fec ?>" id="floatingInput10" placeholder="" readonly>
+              <label for="floatingInput10">Fecha</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtParalelo" type="text" class="form-control" value="<?php echo $corx ?>" id="floatingInput11" placeholder="" readonly>
+              <label for="floatingInput11"> Paralelo </label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtMeridiano" type="text" class="form-control" value="<?php echo $cory ?>" id="floatingInput12" placeholder="" readonly>
+              <label for="floatingInput12">Meridiano</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtObservacion" type="text" class="form-control" value="<?php echo $obse ?>" id="floatingInput13" placeholder="" readonly>
+              <label for="floatingInput13">Observación</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtEstado" type="text" class="form-control" value="<?php echo $estad ?>" id="floatingInput14" placeholder="" readonly>
+              <label for="floatingInput14">Estado Actual</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input name="txtNombreEvidencia" type="text" class="form-control" value="<?php echo $nomEv ?>" id="floatingInput15" placeholder="" readonly>
+              <label for="floatingInput15">Evidencia</label>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col">
             <div class="row">
               <div class="col">
-                <input type="submit" class="btn btn-success" value="Guardar" name="btn" />
+                <input type="submit" class="btn btn-success btn-lg btn-search" value="Validar" name="btn" />
               </div>
               <div class="col">
-                <input type="submit" class="btn btn-primary" value="Consultar" name="btn" />
+                <input type="submit" class="btn btn-primary btn-lg" value="Listar" name="btn" />
               </div>
-              <div class="col">
-                <input type="submit" class="btn btn-primary" value="Modificar" name="btn" />
-              </div>
-              <div class="col">
-                <input type="submit" class="btn btn-primary" value="Listar" name="btn" />
-              </div>
-              <div class="col">
-                <input type="submit" class="btn btn-danger" value="Borrar" name="btn" />
-              </div>
+              
             </div>
           </div>
-          <br>
-          <br>
-          <hr>
-
-          <table class="table table-condensed">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">id</th>
-                <th scope="col">Cedula</th>
-                <th scope="col">Clave</th>
-                <th scope="col">Tipo Usuario</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              foreach ($listaUusuarios as $usuario) :
-              ?>
-                <tr>
-                  <?php
-                  foreach ($usuario as $p) :
-                  ?>
-                    <td><?php echo $p; ?></td>
-                  <?php
-                  endforeach;
-                  ?>
-
-                </tr>
-              <?php
-              endforeach;
-              ?>
-            </tbody>
-          </table>
+        </div>
       </form>
+      <hr>
+      <br>
+      <!-- table -->
+      <div class="container-xl">
+        <div class="table-responsive">
+          <div class="table-wrapper">
+            <div class="table-title">
+              <div class="row">
+                <div class="col-sm-5">
+                  <h2>Listado de <b>evidencias</b></h2>
+                </div>
+              </div>
+            </div>
 
-    </div>
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Titulo</th>
+                  <th>Autor</th>
+                  <th>Condicion</th>
+                  <th>Numeral</th>
+                  <th>Paragrafo</th>
+                  <th>Fecha</th>
+                  <th>Paralelo</th>
+                  <th>Mediriano</th>
+                  <th>Estado</th>
+                  <th>Observacion</th>
+                  <th>Nombre de la evidencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                foreach ($mat as $r) :
+                ?>
+                  <tr>
+                    <?php
+                    foreach ($r as $v) :
+                    ?>
+                      <td><?php echo $v; ?></td>
+                    <?php
+                    endforeach;
+                    ?>
+                  </tr>
+                <?php
+                endforeach;
+                ?>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+        <!-- table -->
+      </div>
   </main>
+
+
+  <table border="1">
+
+  </table>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
   <script src="../sidebars.js"></script>

@@ -1,7 +1,7 @@
 <?php
  try{
 
-  $direccionMiller = "http://localhost/php/proyecto-electiva-php/login.php";
+  $direccionMiller = "http://localhost/App/proyecto-electiva-php/login.php";
   $bot = "";
   session_start();
   if(!isset($_SESSION['usuario'])){
@@ -58,7 +58,7 @@ try {
   switch ($bot) {
     case "Guardar":
       echo "" . $corx;
-      $objEvidencia = new Evidencia($id, $tit, $auEvi, $cond, $numls, $parag, $fec, $corx, $cory, $obse, $estad, "");
+      $objEvidencia = new Evidencia($id, $tit, $auEvi, $cond, $numls, $parag, $fec, $corx, $cory, $obse, "Registrada", "");
       $objControlEvidencia = new ctrEvidencia($objEvidencia);
       $objControlEvidencia->guardar();
       break;
@@ -236,24 +236,51 @@ try {
         <?php 
         if($_SESSION['perfil'] == "admin" ){
       ?>
-        <li>
-          <a href="visPersona.php" class="nav-link text-white">
-            <svg class="bi me-2" width="16" height="16">
-              <use xlink:href="#speedometer2" />
-            </svg>
-            Personas
+      <li>
+        <a href="visPersona.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+          Personas
+        </a>
+      </li>
+      <li>
+        <a href="visUsuario.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+          Usuario
+        </a>
+      </li>
+      <li>
+          <a href="visEvidenciasEstado.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+            Verificar Evidencias
           </a>
         </li>
         <li>
-          <a href="visUsuario.php" class="nav-link text-white">
-            <svg class="bi me-2" width="16" height="16">
-              <use xlink:href="#people-circle" />
-            </svg>
-            Usuarios
+          <a href="visEvidenciasValidas.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#tools"/></svg>
+            Validar Evidencias
+          </a>
+        </li>
+      <?php 
+      } else
+      if($_SESSION['perfil'] == "verificador" ){
+        ?>
+        <li>
+            <a href="visEvidenciasEstado.php" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+              Verificar Evidencias
+            </a>
+          </li>
+        <?php 
+        } else if($_SESSION['perfil'] == "validador" ){
+        ?>
+         <li>
+          <a href="visEvidenciasValidas.php" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#tools"/></svg>
+            Validar Evidencias
           </a>
         </li>
         <?php 
-      }
+        }
       ?>
       </ul>
       <hr>
@@ -302,13 +329,13 @@ try {
           <div class="col">
             <div class=" form-floating mb-3">
               <select name="ddTipoEvi" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
-                <option selected value=" ">Selecione tipo de evidencia</option>
-                <option value="a">Mecanismos de selección y evaluación de estudiantes y profesores </option>
-                <option value="b">Estructura administrativa y académica </option>
-                <option value="c">Cultura de la autoevaluación </option>
-                <option value="d">Programa de egresados </option>
-                <option value="e">Modelo de bienestar </option>
-                <option value="f">Recursos suficientes para garantizar el cumplimiento de las metas </option>
+                <option value="">Selecione tipo de evidencia</option>
+                <option value="a" <?php if($cond == "a"){ echo "selected"; } ?>>Mecanismos de selección y evaluación de estudiantes y profesores </option>
+                <option value="b" <?php if($cond == "b"){ echo "selected"; } ?>>Estructura administrativa y académica </option>
+                <option value="c" <?php if($cond == "c"){ echo "selected"; } ?>>Cultura de la autoevaluación </option>
+                <option value="d" <?php if($cond == "d"){ echo "selected"; } ?>>Programa de egresados </option>
+                <option value="e" <?php if($cond == "e"){ echo "selected"; } ?>>Modelo de bienestar </option>
+                <option value="f" <?php if($cond == "f"){ echo "selected"; } ?>>Recursos suficientes para garantizar el cumplimiento de las metas </option>
               </select>
             </div>
           </div>
@@ -317,19 +344,61 @@ try {
           <div class="col">
             <div class=" form-floating mb-3">
               <select name="txtNumerales" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
-                <option selected value="0">Selecione el numeral</option>
+              <?php
+                    if($numls != null){
+                        ?>
+                        <option value="<?php echo $numls ?>" readonly>
+                        <?php
+                        for ($i = 0; $i < sizeof($matNumeral); $i++) {
+                                if($numls ==  $matNumeral[$i][0]){
+                                    echo $matNumeral[$i][1];
+                                    break;
+                                }
+                        }
+                        ?>
+                        </option>
+                        <?php
+                    } else {
+                        ?>
+                         <option value="" readonly>Selecione el numeral</option>
+                        <?php
+                    }
+                ?>
+               
                 <?php for ($i = 0; $i < sizeof($matNumeral); $i++) { ?>
-                  <option value="<?php echo $matNumeral[$i][0]; ?>"><?php echo $matNumeral[$i][1]; ?></option>
-                <?php } ?>
+                  <option value="<?php echo $matNumeral[$i][0]; ?>" ><?php echo $matNumeral[$i][1]; ?></option>
+                <?php }
+                    
+                ?>
               </select>
             </div>
           </div>
           <div class="col">
             <div class=" form-floating mb-3">
               <select name="txtParagrafos" class="form-select" aria-label="Default select example" value="<?php echo $cond ?>">
-                <option selected value=" ">Selecione el paragrafo</option>
+              <?php
+              if($parag != null){
+                        ?>
+                        <option value="<?php echo $parag ?>" readonly>
+                        <?php
+                        for ($i = 0; $i < sizeof($matParagrafo); $i++) {
+                                if($parag ==  $matParagrafo[$i][0]){
+                                    echo $matParagrafo[$i][1];
+                                    break;
+                                }
+                        }
+                        ?>
+                        </option>
+                        <?php
+                    } else {
+                        ?>
+                         <option value="" readonly>Selecione el paragrafo</option>
+                        <?php
+                    }
+                    ?>
+                    
                 <?php for ($i = 0; $i < sizeof($matParagrafo); $i++) { ?>
-                  <option value="<?php echo $matParagrafo[$i][0]; ?>"><?php echo $matParagrafo[$i][1]; ?></option>
+                  <option value="<?php echo $matParagrafo[$i][0]; ?>" readonly><?php echo $matParagrafo[$i][1]; ?></option>
                 <?php } ?>
               </select>
             </div>
@@ -366,7 +435,7 @@ try {
         <div class="row">
           <div class="col">
             <div class="form-floating mb-3">
-              <input name="txtEstado" type="text" class="form-control" value="<?php echo $estad ?>" id="floatingInput14" placeholder="">
+              <input name="txtEstado" type="text" class="form-control" value="<?php echo $estad ?>" readonly id="floatingInput14" placeholder="">
               <label for="floatingInput14">Estado</label>
             </div>
           </div>
