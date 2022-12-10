@@ -21,7 +21,12 @@
 </head>
 
 <body>
-	<form name="formEv" action="validarIngreso.php" method="post" class=" mb-auto text-center">
+<br><br>
+	<div style="display: flex !important;
+    text-align: center !important;
+    justify-content: center !important;">
+	
+	<form name="formEv" action="validarIngreso.php" method="post" class="" >
 		<div class="input-group form-group">
 			<div class="input-group-prepend">
 				<div class="container">
@@ -44,7 +49,7 @@
 									<input required name="txtClave" type="password" class="form-control" placeholder="Contrasena">
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="text-align: center; justify-content: center; display:flex; ">
 								<input type="submit" value="Ingresar" name="btn" class="btn float-right login_btn">
 							</div>
 						</div>
@@ -53,7 +58,7 @@
 			</div>
 		</div>
 	</form>
-
+	</div>
 </body>
 
 </html>
