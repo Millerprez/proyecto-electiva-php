@@ -26,12 +26,26 @@ try {
 
     switch ($bot) {
         case "Admin":
+            $objControlLogin->asignarPerfil("admin");
             //Miller location: http://localhost/App/proyecto-electiva-php/index.php
             //Duvan location:  http://localhost/app-elect-global/index.php
             header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
             break;
 
         case "Auditor":
+            $objControlLogin->asignarPerfil("auditor");
+            //Miller location: http://localhost/App/proyecto-electiva-php/index.php
+            //Duvan location:  http://localhost/app-elect-global/index.php
+            header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
+            break;
+        case "Validador":
+            $objControlLogin->asignarPerfil("validador");
+            //Miller location: http://localhost/App/proyecto-electiva-php/index.php
+            //Duvan location:  http://localhost/app-elect-global/index.php
+            header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
+            break;
+        case "Verificador":
+            $objControlLogin->asignarPerfil("verificador");
             //Miller location: http://localhost/App/proyecto-electiva-php/index.php
             //Duvan location:  http://localhost/app-elect-global/index.php
             header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
@@ -67,7 +81,10 @@ try {
 
 <body>
     <form name="formEv" action="validarIngreso.php" method="post" class=" mb-auto text-center">
-
+        <div class="card-header">
+            <h3>Seleccione perfil para ingresar</h3>
+        </div>
+        <br>
         <?php
         if ($valid) {
             for ($i = 0; $i < sizeof($perfiles); $i++) {

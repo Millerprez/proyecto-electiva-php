@@ -50,6 +50,9 @@
                 return $mat;
         }
         
+        function asignarPerfil($perfil){
+            $_SESSION['perfil']=  $perfil;
+        }
            
    }
 
