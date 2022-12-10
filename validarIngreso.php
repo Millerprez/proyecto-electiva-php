@@ -50,6 +50,11 @@ try {
             //Duvan location:  http://localhost/app-elect-global/index.php
             header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
             break;
+        case "Aceptar":
+            //Miller location: http://localhost/App/proyecto-electiva-php/index.php
+            //Duvan location:  http://localhost/app-elect-global/index.php
+            header("Location:  http://localhost/php/proyecto-electiva-php/login.php", TRUE, 301);
+            break;
     }
 } catch (Exception $objExp) {
     echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
@@ -62,31 +67,23 @@ try {
 <html>
 
 <head>
-    <title>Login Page</title>
-    <!--Made with love by Mutiullah Samim -->
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <!--Bootsrap 4 CDN-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <!--Fontawesome CDN-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
-    <!--Custom styles-->
+    <title>Validacion ingreso</title>
+   
     <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 </head>
 
 <body>
     <form name="formEv" action="validarIngreso.php" method="post" class=" mb-auto text-center">
-        <div class="card-header">
-            <h3>Seleccione perfil para ingresar</h3>
-        </div>
-        <br>
+
         <?php
-        if ($valid) {
+        if ($valid) { ?>
+            <div class="card-header">
+                <h3>Seleccione perfil para ingresar</h3>
+            </div>
+            <br>
+            <?php
             for ($i = 0; $i < sizeof($perfiles); $i++) {
                 if ($perfiles[$i] == "1") { ?>
 
@@ -110,10 +107,19 @@ try {
 
                     <input type="submit" class="btn btn-info" value="Validador" name="btn" />
 
-        <?php }
+            <?php }
             }
         } else {
-            $msg = "Usuario o clave incorrecta";
+            ?>
+            <script type="">
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            </script>
+        <?php
         }
 
         ?>
