@@ -1,43 +1,3 @@
-<?php
-include("modelo/Login.php");
-include("control/controlConexion.php");
-include("control/ctrLogin.php");
-
-
-$id     = "";
-$clave  = "";
-$msg    = "";
-$bot    = "";
-
-
-try {
-	if (isset($_POST["txtId"])) $id          = $_POST["txtId"];
-	if (isset($_POST['txtClave'])) $clave  = $_POST['txtClave'];
-	if (isset($_POST['btn'])) $bot = $_POST['btn'];
-
-	switch ($bot) {
-		case "Ingresar":
-			$objLogin = new Login($id, $clave);
-			$objControlLogin = new ctrLogin($objLogin);
-			$valid = $objControlLogin->ValidarIngreso();
-
-			if ($valid) {
-				//Miller location: http://localhost/App/proyecto-electiva-php/index.php
-				//Duvan location:  http://localhost/app-elect-global/index.php
-				header("Location: http://localhost/php/proyecto-electiva-php/index.php", TRUE, 301);
-			} else {
-				$msg = "Usuario o clave incorrecta";
-			}
-
-			break;
-	}
-} catch (Exception $objExp) {
-	echo 'Se presentó una excepción: ',  $objExp->getMessage(), "\n";
-}
-
-?>
-
-
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -61,8 +21,7 @@ try {
 </head>
 
 <body>
-	<form name="formEv" action="login.php" method="post" class=" mb-auto text-center">
-		</div>
+	<form name="formEv" action="validarIngreso.php" method="post" class=" mb-auto text-center">
 		<div class="input-group form-group">
 			<div class="input-group-prepend">
 				<div class="container">
@@ -88,17 +47,13 @@ try {
 							<div class="form-group">
 								<input type="submit" value="Ingresar" name="btn" class="btn float-right login_btn">
 							</div>
-							<div class="card-footer">
-								<div class="d-flex justify-content-center links">
-									<?php echo $msg ?>
-								</div>
-							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</form>
-	</div>
-	</div>
-	</div>
-	</div>
-	</from>
+
 </body>
 
 </html>

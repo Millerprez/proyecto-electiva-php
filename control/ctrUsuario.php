@@ -69,6 +69,21 @@
                 $objControlConexion->cerrarBd();
                 return $mat;
         }
+
+        function listarCedulas(){
+            $mat=[];
+            $i=0;
+            $sql="SELECT cedula FROM tblpersona";
+            $objControlConexion = new ControlConexion();
+            $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
+            $recordSet=$objControlConexion->ejecutarSelect($sql);
+            while($row = $recordSet->fetch_array(MYSQLI_BOTH)){
+                    $mat[$i]=$row['cedula'];
+                    $i++;
+                }
+                $objControlConexion->cerrarBd();
+                return $mat;
+        }
         
     }
 ?>

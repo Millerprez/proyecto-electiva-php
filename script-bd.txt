@@ -21,19 +21,32 @@ create table tblautor(
 
 INSERT INTO `tblautor`(`id`, `pkidpersona`) VALUES ('1','10178548');
 
+CREATE TABLE tipo_usuario (
+  id varchar(10) NOT NULL,
+  nombre varchar(15) NOT NULL,
+  primary key (id),
+)
+
+INSERT INTO `tipo_usuario`(`id`, `nombre`) VALUES (1,"ADMIN")
+INSERT INTO `tipo_usuario`(`id`, `nombre`) VALUES (2,"Auditor")
+
 
 CREATE TABLE tblusuario (
   id varchar(50) NOT NULL,
   fkidPersona varchar(50) NOT NULL,
   clave varchar(50) NOT NULL,
-  tipo_usuario varchar(10) NOT NULL,
+  tipo_usuario varchar(15) NOT NULL,
   primary key (fkidPersona),
-  constraint fk_tblusuario_tblpersona foreign key (fkidPersona) references tblpersona(cedula)
-)
+  constraint fk_tblusuario_tblpersona foreign key (fkidPersona) references tblpersona(cedula),
+ constraint fk_tblusuario_tipo_usuario foreign key (tipo_usuario) references tipo_usuario(id)  
+);
 
-INSERT INTO `tblusuario` VALUES ('2', '85974', '7895', 'auditor')
-<
-INSERT INTO tblusuario VALUES ('1','10178548','123','admin')
+INSERT INTO `tblusuario` VALUES ('1', '85974', '7895', '2');
+
+INSERT INTO tblusuario VALUES ('2','10178548','123','1')
+
+INSERT INTO tblusuario VALUES ('3','10178548','123','2')
+
 
 CREATE TABLE tblevidencia(
    id varchar(10) not null,

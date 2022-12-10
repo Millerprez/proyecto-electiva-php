@@ -32,10 +32,26 @@
             } else {     
                     $objControlConexion->cerrarBd();
                     return false;  
-                }
             }
-           
         }
+
+        function cargarPerfiles($cedula){
+            $mat=[];
+            $i=0;
+            $sql="SELECT tipo_usuario FROM tblusuario where fkidPersona='".$cedula."'";
+            $objControlConexion = new ControlConexion();
+            $objControlConexion->abrirBd("localhost","root","","dbproyectoaula", 3306);
+            $recordSet=$objControlConexion->ejecutarSelect($sql);
+            while($row = $recordSet->fetch_array(MYSQLI_BOTH)){
+                    $mat[$i]=$row['tipo_usuario'];
+                    $i++;
+                }
+                $objControlConexion->cerrarBd();
+                return $mat;
+        }
+        
+           
+   }
 
     
 ?>
